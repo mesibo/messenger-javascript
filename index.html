@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en" >
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+	<title>Mesibo Messenger</title>
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.10/css/all.css" integrity="sha384-+d0P83n9kaQMCwj8F4RJB66tzIwOKmrdb46+porD/OvrJ+37WqIM7UoBtwHO6Nlg" crossorigin="anonymous">
+	<link rel="stylesheet" href="styles/messenger.css">
+
+	<!--SCRIPTINCLUDESTART-->
+	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js" integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ" crossorigin="anonymous"></script>
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js" integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm" crossorigin="anonymous"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.9/angular.min.js"></script>
+
+	<script type="text/javascript" src="https://webrtc.github.io/adapter/adapter-latest.js"></script>
+    	<script type="text/javascript" src="https://api.mesibo.com/mesibo.js" crossorigin="anonymous"></script> 
+    	<script type="text/javascript" src="mesibo/config.js"></script>
+    	<script type="text/javascript" src="scripts/controller.js"></script>
+    	<script type="text/javascript" src="scripts/ui.js"></script>
+    	<script type="text/javascript" src="mesibo/utils.js"></script>
+    	<script type="text/javascript" src="mesibo/notify.js"></script>
+    	<script type="text/javascript" src="mesibo/app.js"></script>
+    	<script type="text/javascript" src="mesibo/calls.js"></script>
+    	<script type="text/javascript" src="mesibo/files.js"></script>
+    	<!--SCRIPTINCLUDEEND-->
+</head>
+
+<body ng-app="MesiboWeb" id="mesibowebapp" ng-controller="AppController" style="overflow: hidden;">
+	<div style="max-width: 100%; background-color: hsl(0, 0%, 70%)">
+		<div class="container-fluid" id="main-container" style="width: 1200px; padding-left: 20px; padding-top: 20px; padding-bottom: 20px; background-color: hsl(0, 0%, 70%)">
+			<div class="row h-100" style=" margin: auto; background-color: white">
+				<div class="col-10 col-sm-5 col-md-5 col-lg-4 col-xl-4 d-flex flex-column" id="chat-list-area">
+					<!-- Navbar -->
+					<div class="row d-flex flex-row align-items-center p-2" id="navbar">
+						<img ng-src ="{{getUserPicture(self_user)}}" class="img-fluid rounded-circle mr-2" style="max-height:48px; cursor:pointer;" ng-click="showProfileSettings()" onerror="imgError(this)" id="display-pic">
+						<div>
+							<div class="text-white font-weight-bold" id="username">Mesibo</div>
+							<div class="text-white small">{{self_user.connection_status}}</div>
+						</div>
+						
+						<div class = "col-sm col-xs heading-compose  float-xs-right">
+	                		<i class="fas fa-comment-alt text-white" aria-hidden="true" ng-click="showAvailableUsers()" style="cursor:pointer; float: right;"></i>
+	              		</div>
+
+						<div class="nav-item dropdown ml-auto">
+							<a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false"><i class="fas fa-ellipsis-v text-white"></i></a>
+							<div class="dropdown-menu dropdown-menu-right">
+								<a class="dropdown-item" href="https://mesibo.com" >Mesibo Home</a>
+								<a class="dropdown-item" href="https://mesibo.com/documentation" >Documentation</a>
+								<a class="dropdown-item" href="https://github.com/mesibo/messenger-javascript" >Source Code</a>
+								<a class="dropdown-item" href="#" ng-click = "logout();">Log Out</a>
+							</div>
+						</div>
+
+					</div>
+
+
+					<!-- Chat List = Left Side -->
+					<div ng-repeat="u in summarySession.messages" class="row" id="chat-list" style="overflow:auto;" >
+
+					<!-- Profile Settings -->
+<!-- 					<div ng-show="profile_settings_show" class="d-flex flex-column w-100 h-100" id="profile-settings" ng-style = "{'left': profile_settings_show ==? 0:'-110%'}">
+						<div class="row d-flex flex-row align-items-center p-2 m-0" style="background:#009688; min-height:65px;">
+							<i class="fas fa-arrow-left p-2 mx-3 my-1 text-white" style="font-size: 1.5rem; cursor: pointer;" ng-click="hideProfileSettings()"></i>
+							<div class="text-white font-weight-bold">Profile</div>
+						</div>
+						<div class="d-flex flex-column" style="overflow:auto;">
+							<img ng-src="{{getUserPicture(self_user)}}" class="img-fluid rounded-circle my-5 justify-self-center mx-auto">
+							<input type="file" id="profile-pic-input" class="d-none">
+							<div class="bg-white px-3 py-2">
+								<div class="text-muted mb-2"><label for="input-name">{{getUserName(self_user)}}</label></div>
+								<input type="text" name="name" id="input-name" class="w-100 border-0 py-2 profile-input">
+							</div>
+							<div class="text-muted p-3 small">
+								This name will be visible to your Mesibo contacts and groups
+							</div>
+							<div class="bg-white px-3 py-2">
+								<div class="text-muted mb-2"><label for="input-about">Status</label></div>
+								<input type="text" name="name" id="input-about" value="" class="w-100 border-0 py-2 profile-input">
+							</div>
+						</div>
+						
+					</div> -->
+					<!-- ng-style="{'background-color': 'hsl(0, 0%, 90%)' -->
+
+						<div class="chat-list-item d-flex flex-row w-100 p-2 border-bottom" ng-click="generateMessageArea(u);" tabindex="0">
+			              <img ng-src= '{{getUserPicture(u)}}' onerror="imgError(this)" class="img-fluid rounded-circle mr-2" style="height:50px;">
+			              <div class="w-50">
+		                      <div class="name">{{getUserName(u)}}</div>
+		                      <div class="small last-message">
+			                      <i ng-class="getMessageStatusClass(u.lastMessage)" ng-style = "{'color':getMessageStatusColor(u.lastMessage)}"></i>
+			                      <i ng-class="getFileIcon(u.lastMessage)" style="color: grey;"></i>
+			                      {{getUserLastMessage(u)}}
+				              </div>
+				          </div>
+				              <div class="flex-grow-1 text-right">
+			                      <div class="small time">{{getUserLastMessageTime(u)}}</div>
+		                      </div>		                  
+		                </div>
+	                </div>
+
+					<div ng-show="users_panel_show" class="d-flex flex-column w-100 h-100" id="available-users-panel" ng-style = "{'left': users_panel_show ? 0:'-110%'}" style="background: white;">
+						<div class="row d-flex flex-row align-items-center p-2 m-0" style="background:#009688; min-height:72px;">
+							<i class="fas fa-arrow-left p-2 mx-2 my-1 text-white" style="cursor: pointer; align-self: left;" ng-click="hideAvailableUsers()"></i>
+							<div class="text-white font-weight-bold">New Chat</div>
+						</div>
+						<div class="d-flex flex-column" style="overflow-x: hidden;">
+							<div class="row" id="available-userlist" style="overflow: hidden; background:white;">
+								<div ng-repeat="u in available_users" ng-click="hideAvailableUsers(); generateMessageArea(u);" class="chat-list-item d-flex flex-row w-100 p-2 border-bottom " style="margin-left: 15px" >
+									<img ng-src='{{getUserPicture(u)}}' class="img-fluid rounded-circle mr-2" style="height:50px;" onerror="imgError(this)">
+									<div class="w-50">
+										<div class="name">{{getUserName(u)}}</div>
+										<div class="small last-message">{{isGroup(u)?u.members:u.status}}</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						
+					</div>
+
+				</div>
+
+				<!-- Message Area -->
+				<div class="d-none d-sm-flex flex-column col-12 col-sm-7 col-md-7 col-lg-8 col-xl-8 p-0 h-100" id="message-area" >
+					<div ng-class = "{'d-none w-100 h-100 overlay': message_area_show, 'w-100 h-100 overlay': !message_area_show}"></div>
+
+					<!-- Navbar -->
+					<div class="row d-flex flex-row align-items-center p-2 m-0 w-100" id="navbar">
+						<div class="d-block d-sm-none">
+							<i class="fas fa-arrow-left p-2 mr-2 text-white" style="font-size: 1.5rem; cursor: pointer;"></i>
+						</div>
+						<a href="#"><img ng-src='{{getUserPicture(selected_user)}}' class="img-fluid rounded-circle mr-2" style="height:50px;" id="pic" onerror="imgError(this)" ></a>
+						<div class="d-flex flex-column">
+							<div class="text-white font-weight-bold" id="name">{{getUserName(selected_user)}}</div>
+							<div class="text-white small" id="details">{{selected_user.activity}}</div>
+						</div>
+						<div class="d-flex flex-row align-items-center ml-auto">
+							<a href="#"><i ng-show="selected_user.groupid==0" id="video-button" class="fas fa-video mx-2 text-white" ng-click="makeVideoCall()"></i></a>
+							<a href="#"><i ng-show="selected_user.groupid==0" id="audio-button" class="fas fa-phone fa-flip-horizontal mx-2 text-white" ng-click="makeVoiceCall()"></i></a>
+
+							<input id="upload" type="file" onchange="angular.element(this).scope().onFileSelect(this)"
+						    style="display: none;">
+							<a href="#"><i ng-click="clickUploadFile()" id="file-upload" class="fas fa-paperclip mx-2 text-white d-none d-md-block"></i></a>
+						</div>
+					</div>
+
+					<!-- Messages -->
+					<div class="message-list" id="messages" style="overflow: auto;">
+						   <div ng-repeat="m in messageSession.messages" ng-class="{'align-self-end self p-1 mx-5 rounded bg-white shadow-sm message-item': isSent(m), 'align-self-start p-1 mx-5 rounded bg-white shadow-sm message-item': isReceived(m)}" style="margin-top: 4px">
+				                <div class="small font-weight-bold text-primary" ng-style = "{'display': m.groupid ? 'block':'none'}">
+									{{m.peer}}
+								</div>
+								<div ng-class = "{'': isFileMsg(m), 'd-flex flex-row': !isFileMsg(m)}">
+										<a ng-href="{{isFileMsg(m)? m.fileurl:''}}" target="_blank" >
+										<div ng-show='isImageMsg(m)' class= "image-holder"><img ng-src= "{{m.fileurl}}" style="cursor:pointer;" />
+										</div>
+										<div ng-show='isVideoMsg(m)' class= "image-holder"><video controls="controls" preload="true" ng-src= "{{m.fileurl}}" style="cursor:pointer;" />
+										</div>
+										<div ng-show='isAudioMsg(m)' class= "image-holder"><audio controls="controls" preload="true" ng-src= "{{m.fileurl}}" style="cursor:pointer;" />
+										</div>
+										<div ng-show='isOtherMsg(m)' class= "image-holder"><img ng-src= "images/file/default_file_icon.jpg" style="cursor:pointer;" />
+										</div>
+										<div ng-show="m.title" class="body m-1 mr-2">{{m.title}}</div>
+										</a>
+				                        <div ng-show="m.message" class="body m-1 mr-2">{{m.message}}</div>
+				                        <div class="time ml-auto small text-right flex-shrink-0 align-self-end text-muted" style="width:75px;">
+				                                {{m.date.time}}
+				                                <i ng-class= "getMessageStatusClass(m)" ng-style = "{'color':getMessageStatusColor(m)}" ></i>
+				                        </div>
+				                </div>
+		       				</div>
+		       										 <!-- Anchor to Scroll -->
+		       					       				<div id="messages_end">&nbsp;</div>
+					</div>
+
+					<!--Loading ANIMATION-->
+					<!--END LOADING ANIMATION-->
+
+					<!-- Input -->
+					<div ng-class = "{'d-flex justify-self-end align-items-center flex-row': message_area_show, 'd-none justify-self-end align-items-center flex-row': !message_area_show}" id="input-area" >
+						<a href="#"><i class="far fa-smile text-muted px-3" style="font-size:1.5rem;"></i></a>
+						<input ng-model="input_message_text" ng-keydown="$event.keyCode === 13 && sendMessage()" type="text" name="message" id="input" placeholder="Type a message" class="flex-grow-1 border-0 px-3 py-2 my-3 rounded shadow-sm">
+						<i class="fas fa-paper-plane text-muted px-3" style="cursor:pointer;" ng-click="sendMessage()"></i>
+					</div>
+				</div>
+			</div>
+
+			 <!--Logout Modal -->
+			<div class="container">
+				<div class="modal fade" id="logoutModal" tabindex="-1" aria-hidden="true" role="dialog" style="width: 100%;height: 100%; background-color: #00868b">
+				<div class="modal-dialog">
+
+				  <div class="modal-content">
+				    <div class="modal-header">
+				      <h7 class="modal-title" style="width:100% ;text-align: center;">You have been logged-out</h7>
+				    </div>
+				    <div class="modal-footer">
+				    	<button type="button" class="btn btn-default" style="width:100% ;text-align: center;" data-dismiss="modal" onclick="location.reload();">Login</button>
+				    </div>
+				  </div>
+				  
+				</div>
+				</div>
+			</div>
+
+			<div class="container">
+				<div ng-show="is_answer_call" class="modal fade" id="answerModal" tabindex="-1" role="dialog" aria-labelledby="answerModalLabel" aria-hidden="true">
+			  		<div class="modal-dialog" role="document">
+			    		<div class="modal-content">
+			      			<div class="modal-header">
+			        			<h5 class="modal-title" id="answerModalLabel">Incoming Call</h5>
+			        			<button type="button" class="close" data-dismiss="modal" ng-click="HangupCall();" aria-label="Close">
+			          			<span aria-hidden="true">&times;</span>
+			        			</button>
+			      			</div>
+			      			<div class="modal-body" id="ansBody">{{call_alert_message}}</div>
+			      			<div class="modal-footer">
+			        			<button type="button" class="btn btn-danger" data-dismiss="modal" ng-click="hangupCall();">Hang-up</button>
+			        			<button type="button" class="btn btn-success" data-dismiss="modal" ng-click="answerCall();">Answer</button>
+			      			</div>
+			    		</div>
+			  		</div>
+				</div>
+			</div>
+
+			<div class="container">
+				<div ng-show="is_video_call" class="modal fade" id="videoModal" tabindex="-1" role="dialog" aria-labelledby="videoModalLabel" aria-hidden="true" style="background-color: #00868b">
+			  		<div class="modal-dialog" role="document">
+			    		<div class="modal-content">
+			      			<div class="modal-header">
+			        			<h6 class="modal-title" id="videoModalLabel">Mesibo Video Call </h5>
+			        			<button type="button" class="btn btn-info" id="vcstatus" style="float:center;">{{call_status}} </button>
+			        			<button type="button" class="btn btn-danger" data-dismiss="modal" ng-click="hangupVideoCall();">Hang-up
+			        			</button>
+			      			</div>
+
+			      			<div class="modal-body" id="videoAnsBody" style="background-color: grey">
+				                    <div id="videoHolder"style="transition: height 450ms ease 0s; height: 500px;">
+							              <div class="remote-video-holder">
+							                <video id="remoteVideo" playsinline autoplay></video>
+							              </div>
+							              <div class="local-video-holder">
+							                <video class="local-video" id="localVideo" playsinline autoplay muted ></video>
+							              </div>       
+							        </div>
+			      			</div>
+			    		</div>
+			  		</div>
+				</div>
+			</div>
+
+			<div class="container">
+				<div ng-show="is_voice_call" class="modal fade" id="voiceModal" tabindex="-1" role="dialog" aria-labelledby="voiceModalLabel" aria-hidden="true" style="background-color: #00868b">
+			  		<div class="modal-dialog" role="document">
+			    		<div class="modal-content">
+			      			<div class="modal-header">
+			        			<h5 class="modal-title" id="voiceModalLabel">Mesibo Voice Call </h5>
+			        			<button type="button" class="btn btn-info" id="acstatus" style="float:center;">{{call_status}} </button>
+			        			<button type="button" class="btn btn-danger" data-dismiss="modal" ng-click="hangupAudioCall();">Hang-up</button>
+			        			</button>
+			      			</div>
+
+			      			<div class="modal-body" id="audioAnsBody" style="visibility:hidden; height:5px;">
+			              	    <audio id="audioPlayer" autoplay="autoplay" controls="controls" style="visibility:hidden; height:5px;"></audio>
+			      			</div>
+			    		</div>
+			  		</div>
+					</div>
+			</div>
+
+			<div class="container">
+				<div class="modal fade" id="fileModal" tabindex="-1" role="dialog" aria-labelledby="fileModalLabel" aria-hidden="true" >
+			  		<div class="modal-dialog" role="document">
+			    		<div class="modal-content">
+			      			<div class="modal-header">
+			        			<h7 class="modal-title" id="fileModalLabel">Selected File: </h7>
+		        			        <button type="button" class="close" data-dismiss="modal" ng-click="closeFilePreview();" aria-label="Close">
+								      <span aria-hidden="true">&times;</span>
+								    </button>
+			      			</div>
+
+			      			<div class="modal-body" id="fileBody">
+			              	    <div class="file-preview-holder">
+			              	    <img  id = 'image-preview' src="">
+			              	    <video id = 'video-preview' controls="controls" preload="true"  src=""></video>	
+			              	    <!-- Image/video/Docs custom holder elements -->
+			              	    </div>
+			              	    <div class="justify-self-end align-items-center flex-row d-flex" >
+									<a href="#"><i class="far fa-smile text-muted px-3" style="font-size:1.5rem;"></i>
+									</a>
+									<input ng-model="input_file_caption" type="text" name="caption" id="file-caption" placeholder="Add caption" class="flex-grow-1 border-0 px-3 py-2 my-3 rounded shadow-sm">
+									<i class="fas fa-paper-plane text-muted px-3" style="cursor:pointer;" ng-click="closeFilePreview();sendFile()"></i>
+								</div>
+			              
+			      			</div>
+			    		</div>
+			  		</div>
+					</div>
+			</div>
+		</div>
+	</div>			
+        <script type="text/javascript"> 
+                $(document).ready(function(){ 
+                        angular.element(document.getElementById('mesibowebapp')).scope().initMesibo('messenger');
+                });
+        </script> 
+</body>
+
+</html>
