@@ -43,8 +43,7 @@
  */
 
 //Application Credentials
-// const MESIBO_ACCESS_TOKEN = "a34cef7f9b681029dd16f04ef62945c68150ab16ff9eda2eff12a2d3";
-const MESIBO_ACCESS_TOKEN = "63e48333d1f05f14d7b1e80186df762da1326d3c6e4e221282bd";
+const MESIBO_ACCESS_TOKEN = "YOUR ACCESS TOKEN";
 const MESIBO_APP_ID = "web";
 
 //If you are hosting Mesibo backend on your own server, change this accordingly.
