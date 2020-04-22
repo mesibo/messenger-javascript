@@ -42,32 +42,65 @@
  *
  */
 
-//Application Credentials
-const MESIBO_ACCESS_TOKEN = "YOUR ACCESS TOKEN";
-const MESIBO_APP_ID = "web";
+/* Refer following tutorial and API documentation to know how to create a user token
+ * https://mesibo.com/documentation/tutorials/first-app/ 
+ */
+var MESIBO_ACCESS_TOKEN = "";
+/* App ID used to create a user token. */
+var MESIBO_APP_ID = "web";
 
-//If you are hosting Mesibo backend on your own server, change this accordingly.
-//Refer https://github.com/mesibo/messenger-app-backend
+/* If you are hosting Mesibo backend on your own server, change this accordingly.
+ * Refer https://github.com/mesibo/messenger-app-backend
+ */
 const MESIBO_API_URL = "https://app.mesibo.com/api.php";
 
-//Default images
+/* Default images */
 const MESIBO_DEFAULT_PROFILE_IMAGE = "images/profile/default-profile-icon.jpg";
 const MESIBO_DEFAULT_GROUP_IMAGE = "images/profile/default-group-icon.jpg";
 
-//File url sources
+/* File url sources */
 var MESIBO_DOWNLOAD_URL = "https://appimages.mesibo.com/";
 var MESIBO_UPLOAD_URL = "https://s3.mesibo.com/api.php";
 
-//Self contacts, to be sent for synchronization for messenger
-const MESSENGER_CONTACTS_ARRAY=[];
+/* Toggle for using phone Login in messenger */
+const isLoginEnabled = true;
+/* Toggle for synchronizing contacts in messenger */
+var isContactSync = true;
+if(!isContactSync){
+	/*If you do not perform contact sync, define local contacts to be loaded
+	 * in list of available users
+	 */
+	var MESIBO_LOCAL_CONTACTS =[
+	{	
+		 'address' : '91XXXXXXXXX'
+		,'groupid' : 0	 
+		,'picture' : 'images/profile/default-profile-icon.jpg'
+		,'name'    : 'Contact Name'
+		,'status'  : 'Contact status'
+	},
+	
+	{	 'address' : ''
+		,'groupid' : 1234 	 
+		,'picture' : 'images/profile/default-group-icon.jpg'
+		,'name'    : 'Group Name'
+	},
 
-// Set Display Avatar and destination address for popup
+	]
+}
+
+/* (Optional) Phone numbers of contacts who are using mesibo,
+ * can be used for synchronization in getcontacts API 
+ */
+const MESIBO_PHONES_ARRAY=[];
+
+
+/* Set Display Avatar and destination address for popup */
 const POPUP_DISPLAY_NAME = "Mesibo"
 const POPUP_DISPLAY_PICTURE = "images/profile/default-profile-icon.jpg"
-const POPUP_DESTINATION_USER = '919448967903';
-// const POPUP_DESTINATION_USER = '18885551001';
+/* A destination where the popup demo app will send message or make calls */
+const POPUP_DESTINATION_USER = 'js_user';
 
-//Debug Mode Configuration
+/* Debug Mode Configuration */
 isDebug = true ;// toggle this to turn on / off for global control
 if (isDebug) var MesiboLog = console.log.bind(window.console);
 else var MesiboLog = function() {}

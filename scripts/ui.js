@@ -132,8 +132,8 @@ let getScope = () =>{
         return angular.element(document.getElementById('mesibowebapp')).scope();
 }
 
-let imgError = (image, groupid) => {
-    MesiboLog("imgError", groupid);
+let imgError = (image) => {
+    MesiboLog("imgError");
     image.onerror = "";
     image.src = MESIBO_DEFAULT_PROFILE_IMAGE;
     return true;

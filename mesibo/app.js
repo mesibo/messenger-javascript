@@ -62,10 +62,19 @@ MesiboApp.prototype.displayContacts = function(contacts){
 	return 0;
 };
 
-MesiboApp.prototype.fetchContacts = async function(usrToken, ts) {
+MesiboApp.prototype.fetchContacts = async function(userToken, ts, phones) {
 	MesiboLog("fetchContacts called");
+	if(!isValidString(userToken))
+		return -1;
+	if(!isValid(ts))
+		ts = 0;
+	if(!isValid(phones) || !isValid(phones.length) || !phones.length)
+		phones = [];
+
+	if(!isValidString(MESIBO_API_URL))
+		return -1;
 	//Request to back-end service, to fetch contact details and profile details
-	const response = await fetch(MESIBO_API_URL + '?op=getcontacts&token=' + usrToken + '&ts=' + ts);
+	const response = await fetch(MESIBO_API_URL + '?op=getcontacts&token=' + userToken + '&ts=' + ts+ '&phones='+ phones);
 
 	const contacts_bundle = await response.json(); //extract JSON from the HTTP response
 	MesiboLog(contacts_bundle);

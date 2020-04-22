@@ -167,7 +167,8 @@ angular.module('MesiboWeb', [])
         }
 
         if(isValidString(picture) && isValidImage(picture) && isValidString(MESIBO_DOWNLOAD_URL)){
-            picture = MESIBO_DOWNLOAD_URL + picture;
+            if((picture!= MESIBO_DEFAULT_PROFILE_IMAGE) && (picture!=MESIBO_DEFAULT_GROUP_IMAGE))
+                picture = MESIBO_DOWNLOAD_URL + picture;
         }
         
         return picture; 
@@ -329,6 +330,19 @@ angular.module('MesiboWeb', [])
 
     $scope.onMessage = function(m, data) {
     MesiboLog("$scope.prototype.onMessage", m, data);
+        m.user.name = "";
+
+        // If you get a message from a new contact, the name will be ""
+        // So, you need to add it as a contact and synchronize with backend
+        // var user = m.user;
+        // if(isValid(user) && isContactSync){
+        //     var uname = user.name;
+        //     if("" == uname){
+        //         if(!isGroup(user))
+        //             $scope.app.fetchContacts(MESIBO_ACCESS_TOKEN, 0, [m.address]);
+        //     }
+
+        // }
 
         //Update profile details
         if (1 == m.type) {
@@ -647,7 +661,10 @@ angular.module('MesiboWeb', [])
         $scope.app = new MesiboApp($scope);
         $scope.call = new MesiboCall($scope);
         $scope.file = new MesiboFile($scope);
-        $scope.app.fetchContacts(MESIBO_ACCESS_TOKEN, 0);
+        if(isContactSync)
+            $scope.app.fetchContacts(MESIBO_ACCESS_TOKEN, 0, MESIBO_PHONES_ARRAY);
+        else
+            $scope.setAvailableUsers(MESIBO_LOCAL_CONTACTS);
     }
    
     $scope.init_popup = function(){ 
@@ -675,12 +692,15 @@ angular.module('MesiboWeb', [])
         $scope.mesibo.setDatabase("mesibo");
         $scope.mesibo.start();           
 
-        //Initialize Application
-        if(demo_app_name == "messenger")
-	    $scope.init_messenger();
+    //Initialize Application
+    if(demo_app_name == "messenger")
+        $scope.init_messenger();
 	
-	if(demo_app_name == "popup")
+	if(demo_app_name == "popup"){
+        //Contact synchronization is not required for popup
+        isContactSync = false;
 	    $scope.init_popup();
+    }
   }
 
  }]);

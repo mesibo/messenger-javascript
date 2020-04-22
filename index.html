@@ -18,6 +18,7 @@
 	<script type="text/javascript" src="https://webrtc.github.io/adapter/adapter-latest.js"></script>
     	<script type="text/javascript" src="https://api.mesibo.com/mesibo.js" crossorigin="anonymous"></script> 
     	<script type="text/javascript" src="mesibo/config.js"></script>
+    	<script type="text/javascript" src="mesibo/login.js"></script>
     	<script type="text/javascript" src="scripts/controller.js"></script>
     	<script type="text/javascript" src="scripts/ui.js"></script>
     	<script type="text/javascript" src="mesibo/utils.js"></script>
@@ -108,7 +109,7 @@
 							<div class="text-white font-weight-bold">New Chat</div>
 						</div>
 						<div class="d-flex flex-column" style="overflow-x: hidden;">
-							<div class="row" id="available-userlist" style="overflow: hidden; background:white;">
+							<div class="row" id="available-userlist" style=" background:white;">
 								<div ng-repeat="u in available_users" ng-click="hideAvailableUsers(); generateMessageArea(u);" class="chat-list-item d-flex flex-row w-100 p-2 border-bottom " style="margin-left: 15px" >
 									<img ng-src='{{getUserPicture(u)}}' class="img-fluid rounded-circle mr-2" style="height:50px;" onerror="imgError(this)">
 									<div class="w-50">
@@ -187,6 +188,43 @@
 					</div>
 				</div>
 			</div>
+
+			<!-- Login Modal Start-->
+
+			<div id="ModalLoginForm" class="modal fade">
+			<div class="modal-dialog" role="document">
+			    <div class="modal-content">
+			        <div class="modal-header">
+			            <h1 class="modal-title">Login</h1>
+			        </div>
+			        <div class="modal-body">
+			            <form role="form" method="POST" action="">
+			                <input type="hidden" name="_token" value="">
+			                <div class="form-group">
+			                    <label class="control-label">Phone</label>
+			                    <div>
+			                        <input type="phone" class="form-control input-lg" id="phone" name="phone" value="">
+			                    </div>
+			                </div>
+			                <div class="form-group" id="otp-input">
+			                    <label class="control-label">One Time Password (OTP)</label>
+			                    <div>
+			                        <input type="password"  class="form-control input-lg" id="otp" name="password">
+			                    </div>
+			                </div>
+			                <div class="form-group">
+			                    <div>
+			                        <button type="button" class="btn btn-success" onclick="getMesiboDemoAppToken()">Login</button>
+			                    </div>
+			                    
+			                </div>
+			            </form>            
+			        </div>
+			    </div><!-- /.modal-content -->
+			</div><!-- /.modal-dialog -->
+			</div><!-- /.modal -->
+
+			<!--Login Modal End -->
 
 			 <!--Logout Modal -->
 			<div class="container">
@@ -303,9 +341,35 @@
 		</div>
 	</div>			
         <script type="text/javascript"> 
-                $(document).ready(function(){ 
-                        angular.element(document.getElementById('mesibowebapp')).scope().initMesibo('messenger');
+	        	function launchMessenger(){
+                	angular.element(document.getElementById('mesibowebapp')).scope().initMesibo('messenger'); 
+                }
+
+                $(document).ready(function(){
+                		//Fetch token from storage, if token is not defined
+                		if(!isValidString(MESIBO_ACCESS_TOKEN)){
+                			MesiboLog("Invalid token, checking token in localStorage");
+                			MESIBO_ACCESS_TOKEN = getTokenFromStorage();
+                		}
+                		
+                		//Launch messenger with a valid access token
+                		if(isValidString(MESIBO_ACCESS_TOKEN)){
+                			MesiboLog("Valid token, launching Messenger");
+                			launchMessenger();
+                			return;
+                		}
+
+                		//Generate token by validation with OTP login and then launch messenger
+                		if(isLoginEnabled){
+                			MesiboLog("Token to be generated, launching phone login");
+	                		loadLoginWindow();
+                		}
+	                	else{
+	                		alert('Please check configuration, to set valid access token or enable phone login');			
+	                	}
                 });
+
+                
         </script> 
 </body>
 
