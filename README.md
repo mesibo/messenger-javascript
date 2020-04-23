@@ -9,10 +9,17 @@ There are two sample applications:
 
 ## Features:
 - One-to-One messaging, Voice and Video Call
-- Typing indicators and Online status
+- Online status
 - Read receipts
 - Sending Files 
 - Chat history
+
+### Features under implementation
+- Sending typing indicators and activity 
+- Creating group from the app
+- Date header in message area
+- URL Preview
+- Group conference calls
 
 ## Instructions
 

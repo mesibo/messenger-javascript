@@ -330,7 +330,6 @@ angular.module('MesiboWeb', [])
 
     $scope.onMessage = function(m, data) {
     MesiboLog("$scope.prototype.onMessage", m, data);
-        m.user.name = "";
 
         // If you get a message from a new contact, the name will be ""
         // So, you need to add it as a contact and synchronize with backend
@@ -367,37 +366,6 @@ angular.module('MesiboWeb', [])
 
                 return 0;
         }
- 
-
-        // //Update Activity indicators
-        if (isValid(m.presence)) {
-
-            if(m.groupid!=0 || m.peer != $scope.selected_user.address){
-                MesiboLog(m.peer != $scope.selected_user.address);
-                return 0;
-            }
-
-            var activity = "";
-            const p = m.presence;
-            switch (p) {
-                case MESIBO_ACTIVITY_ONLINE:
-                    activity = "Online";
-                    break
-                case MESIBO_ACTIVITY_TYPING:
-                    activity = "Typing...";
-                    break;
-                case MESIBO_ACTIVITY_LEFT:
-                    activity = "";
-                    break;
-            }
-
-            $scope.selected_user.activity = activity;
-        }
-
-        else if (MESIBO_ORIGIN_REALTIME == m.origin){
-                $scope.selected_user.activity = "Online";
-                $scope.scrollToLastMsg();
-            }
 
         $scope.refresh();
 
@@ -594,7 +562,7 @@ angular.module('MesiboWeb', [])
         $scope.refresh();
     }
 
-    $scope.onCall = function(callid, from, data){
+    $scope.onCall = function(callid, from, video){
         if(video){
             $scope.is_video_call = true;
             $scope.mesibo.setupVideoCall("localVideo", "remoteVideo", true);

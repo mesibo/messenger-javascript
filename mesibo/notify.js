@@ -76,7 +76,7 @@ MesiboNotify.prototype.Mesibo_OnMessage = function(m, data) {
 // You will receive calls here
 MesiboNotify.prototype.Mesibo_OnCall = function(callid, from, video) {
 	MesiboLog("Mesibo_OnCall: "+ callid+ " "+ from +" "+ video);
-    this.scope.onCall(callid, from, data);		
+    this.scope.onCall(callid, from, video);		
 }
 
 // You will receive call status here
