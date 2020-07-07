@@ -43,7 +43,11 @@
  */
 
 /* Refer following tutorial and API documentation to know how to create a user token
- * https://mesibo.com/documentation/tutorials/first-app/ 
+ * https://mesibo.com/documentation/tutorials/first-app/
+ *
+ * Note, that if you are using logging in with your phone, Mesibo will generate the token.
+ * In that case, no need to configure token here
+ * 
  */
 var MESIBO_ACCESS_TOKEN = "";
 /* App ID used to create a user token. */
@@ -62,9 +66,11 @@ const MESIBO_DEFAULT_GROUP_IMAGE = "images/profile/default-group-icon.jpg";
 var MESIBO_DOWNLOAD_URL = "https://appimages.mesibo.com/";
 var MESIBO_UPLOAD_URL = "https://s3.mesibo.com/api.php";
 
-/* Toggle for using phone Login in messenger */
+/************************ Messenger Config Start *****************************/
+
+/* Toggle for using phone Login*/
 const isLoginEnabled = true;
-/* Toggle for synchronizing contacts in messenger */
+/* Toggle for synchronizing contacts*/
 var isContactSync = true;
 if(!isContactSync){
 	/*If you do not perform contact sync, define local contacts to be loaded
@@ -93,12 +99,24 @@ if(!isContactSync){
  */
 const MESIBO_PHONES_ARRAY=[];
 
+/*Optional link preview*/
+const isLinkPreview = false; //Set to false if link preview not required
+const LINK_PREVIEW_SERVICE = "http://api.linkpreview.net/";
+const LINK_PREVIEW_KEY = ""; // Access Key
+const LINK_DEFAULT_IMAGE = "images/file/default-link-icon.jpg"
+
+/************************ Messenger Config End *****************************/
+
+/************************ Popup Config Start *****************************/
 
 /* Set Display Avatar and destination address for popup */
 const POPUP_DISPLAY_NAME = "Mesibo"
 const POPUP_DISPLAY_PICTURE = "images/profile/default-profile-icon.jpg"
 /* A destination where the popup demo app will send message or make calls */
 const POPUP_DESTINATION_USER = 'js_user';
+
+/************************ Popup Config End *****************************/
+
 
 /* Debug Mode Configuration */
 isDebug = true ;// toggle this to turn on / off for global control

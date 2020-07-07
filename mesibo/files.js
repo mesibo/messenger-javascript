@@ -86,7 +86,7 @@ MesiboFile.prototype.sendFile = function(pFileType, pFileurl, pThumbnail){
 	if(this.scope.input_file_caption!="")
 		f.title = this.scope.input_file_caption;
 
-	MesiboLog(m, m.id, f);
+	MesiboLog("---Sending File---", m, m.id, f);
 	this.api.sendFile(m, m.id, f);
 
 	this.scope.input_file_caption = "";
@@ -228,6 +228,72 @@ MesiboFile.prototype.uploadSendFile = async function() {
 	else
 		this.sendFile(this.getFileType(f.name), file_url, null);
 
+}
+
+MesiboFile.prototype.getLinkPreviewJson = async function(pUrl,pPreviewEndpoint, pServiceKey){
+	
+	if(!isValidString(pUrl))
+		return null; 
+	
+	if(!isValidString(pPreviewEndpoint)){
+		MesiboLog("Invalid link preview service");
+        return null; 
+	}
+	
+	if(!isValidString(pServiceKey)){
+		MesiboLog("Invalid link preview access key");
+		return null; 
+	}
+
+	//Request to link preview service
+    const linkPreviewResponse = await fetch(pPreviewEndpoint+ '?key=' + pServiceKey + '&q=' + pUrl);
+    const linkPreviewJson = await linkPreviewResponse.json(); 
+	
+	if(!isValidString(linkPreviewJson.title))
+		MesiboLog("Invalid title in linkPreviewJson");
+
+	if(!isValidString(linkPreviewJson.description))
+		MesiboLog("Invalid description in linkPreviewJson");
+
+	if(!isValidString(linkPreviewJson.image)){
+		MesiboLog("Invalid image in linkPreviewJson");
+		linkPreviewJson.image = LINK_DEFAULT_IMAGE;
+	}
+
+	if(!isValidString(linkPreviewJson.url))
+		MesiboLog("Invalid url in linkPreviewJson");
+
+	if(isValidString(linkPreviewJson.url))
+		linkPreviewJson.hostname = linkPreviewJson.url.replace('http://','').replace('https://','').split(/[/?#]/)[0];
+
+	
+	if(linkPreviewJson.error){
+		//Fatal error
+		MesiboLog("Error in link preview: ", linkPreviewJson.error);
+		return null; 
+	}
+	
+	return linkPreviewJson;
+}
+
+MesiboFile.prototype.sendMessageWithUrlPreview = function(linkPreview, messageParams) {
+	if(isValid(linkPreview) && isValid(messageParams)){
+		var urlAsfile = {};
+		//xx TODO xx Special code for link type is probably required
+		const MESIBO_FILETYPE_IMAGE = 1;
+		urlAsfile.filetype = MESIBO_FILETYPE_IMAGE;
+		urlAsfile.fileurl = linkPreview.image;
+		// urlAsfile.tn = []; //Get Thumbnail if required
+		urlAsfile.title = linkPreview.title;
+		urlAsfile.launchurl = linkPreview.url;
+
+		MesiboLog(messageParams, messageParams.id, urlAsfile);
+		this.api.sendFile(messageParams, messageParams.id, urlAsfile);
+		this.scope.link_preview = null;	
+		this.scope.refresh();	
+	}
+	else
+		MesiboLog("Error: sendMessageWithUrlPreview: Invalid linkPreview");
 }
 
 MesiboFile.prototype.sendWithThumbnail = function(blob, imgUrl) {

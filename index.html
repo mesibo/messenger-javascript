@@ -31,7 +31,7 @@
 
 <body ng-app="MesiboWeb" id="mesibowebapp" ng-controller="AppController" style="overflow: hidden;">
 	<div style="max-width: 100%; background-color: hsl(0, 0%, 70%)">
-		<div class="container-fluid" id="main-container" style="width: 1200px; padding-left: 20px; padding-top: 20px; padding-bottom: 20px; background-color: hsl(0, 0%, 70%)">
+		<div ng-cloak="self_user.isConnected" class="container-fluid" id="main-container" style="width: 1200px; padding-left: 20px; padding-top: 20px; padding-bottom: 20px; background-color: hsl(0, 0%, 70%)">
 			<div class="row h-100" style=" margin: auto; background-color: white">
 				<div class="col-10 col-sm-5 col-md-5 col-lg-4 col-xl-4 d-flex flex-column" id="chat-list-area">
 					<!-- Navbar -->
@@ -60,7 +60,7 @@
 
 
 					<!-- Chat List = Left Side -->
-					<div ng-repeat="u in summarySession.messages" class="row" id="chat-list" style="overflow:auto;" >
+					<div ng-repeat="u in summarySession.getMessages()" class="row" id="chat-list" style="overflow:auto;" >
 
 					<!-- Profile Settings -->
 <!-- 					<div ng-show="profile_settings_show" class="d-flex flex-column w-100 h-100" id="profile-settings" ng-style = "{'left': profile_settings_show ==? 0:'-110%'}">
@@ -150,28 +150,54 @@
 
 					<!-- Messages -->
 					<div class="message-list" id="messages" style="overflow: auto;">
-						   <div ng-repeat="m in messageSession.messages" ng-class="{'align-self-end self p-1 mx-5 rounded bg-white shadow-sm message-item': isSent(m), 'align-self-start p-1 mx-5 rounded bg-white shadow-sm message-item': isReceived(m)}" style="margin-top: 4px">
+						   <div ng-repeat="m in messageSession.getMessages()" ng-class="{'align-self-end self p-1 mx-5 rounded bg-white shadow-sm message-item': isSent(m), 'align-self-start p-1 mx-5 rounded bg-white shadow-sm message-item': isReceived(m)}" style="margin-top: 4px">
 				                <div class="small font-weight-bold text-primary" ng-style = "{'display': m.groupid ? 'block':'none'}">
 									{{m.peer}}
 								</div>
-								<div ng-class = "{'': isFileMsg(m), 'd-flex flex-row': !isFileMsg(m)}">
-										<a ng-href="{{isFileMsg(m)? m.fileurl:''}}" target="_blank" >
+								<!-- Link Preview Start -->
+								<!-- <a ng-show="{{isUrlMsg(m)}}" ng-href="{{m.launchurl}}" style="text-decoration: none;color: black;" target="_blank" >
+								<div ng-show="{{isUrlMsg(m)}}" class="d-flex flex-row">
+									<div>
+										<img ng-src="https://mesibo.com/assets/images/mesibo-favicon.png" style="height:100px;width:100px"/ >
+									</div>
+									<div style="background-color:hsl(0,0%,0%, 0.1); max-width: 500px;max-height: 100px; min-width: 200px">
+										<div style="font-size: 15px;font-weight: 600;padding: 5px 5px 5px 5px;">{{m.title}}</div>
+										<div style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 15px;padding: 0px 5px 0px 5px;">Description
+										</div>
+										<p style="color:grey;font-size: 15px; padding: 0px 5px 0px 5px;">{{hostnameFromUrl(m.launchurl)}}</p>
+									</div>
+								</div>
+								</a> -->
+								<!-- Link Preview End -->
+		                        <!-- File Preview Start -->
+		                        <!-- Check m.fileurl!="" -->
+								<div ng-show='{{isFileMsg(m)}}' ng-class = "{'': isFileMsg(m), 'd-flex flex-row': !isFileMsg(m)}">
+										<a ng-href="{{m.launchurl? m.launchurl: m.fileurl}}" target="_blank" >
 										<div ng-show='isImageMsg(m)' class= "image-holder"><img ng-src= "{{m.fileurl}}" style="cursor:pointer;" />
 										</div>
+										<!-- Show URL Custom Thumbnail -->
+										<!-- <div ng-show='isUrlMsg(m)' class= "image-holder"><img ng-src= "https://mesibo.com/assets/images/mesibo-favicon.png" 
+										style="cursor:pointer;" />
+										</div> -->
 										<div ng-show='isVideoMsg(m)' class= "image-holder"><video controls="controls" preload="true" ng-src= "{{m.fileurl}}" style="cursor:pointer;" />
 										</div>
 										<div ng-show='isAudioMsg(m)' class= "image-holder"><audio controls="controls" preload="true" ng-src= "{{m.fileurl}}" style="cursor:pointer;" />
 										</div>
-										<div ng-show='isOtherMsg(m)' class= "image-holder"><img ng-src= "images/file/default_file_icon.jpg" style="cursor:pointer;" />
+										<div ng-show='isOtherMsg(m)' class= "image-holder"><img ng-src= "images/file/default-file-icon.jpg" style="cursor:pointer;" />
 										</div>
-										<div ng-show="m.title" class="body m-1 mr-2">{{m.title}}</div>
+										<div ng-show="m.title" style="max-width: 250px"class="body m-1 mr-2">{{m.title}}</div>
 										</a>
-				                        <div ng-show="m.message" class="body m-1 mr-2">{{m.message}}</div>
-				                        <div class="time ml-auto small text-right flex-shrink-0 align-self-end text-muted" style="width:75px;">
-				                                {{m.date.time}}
-				                                <i ng-class= "getMessageStatusClass(m)" ng-style = "{'color':getMessageStatusColor(m)}" ></i>
-				                        </div>
 				                </div>
+				                <!-- File Preview End -->
+				                <div>
+									<div ng-show="m.message" class="body m-1 mr-2">{{m.message}}</div>
+			                        <div class="time ml-auto small text-right flex-shrink-0 align-self-end text-muted" style="width:75px;">
+			                                {{m.date.time}}
+			                                <i ng-class= "getMessageStatusClass(m)" ng-style = "{'color':getMessageStatusColor(m)}" ></i>
+			                        </div>        
+		                        </div>
+
+
 		       				</div>
 		       										 <!-- Anchor to Scroll -->
 		       					       				<div id="messages_end">&nbsp;</div>
@@ -180,10 +206,32 @@
 					<!--Loading ANIMATION-->
 					<!--END LOADING ANIMATION-->
 
+					<!-- Real-Time Link Preview Start -->
+								<a ng-show="link_preview" style="text-decoration: none;color: black;background-color: hsl(0, 0%, 95%); padding: 5px 5px 0px 65px" target="_blank" >
+									<div class="d-flex flex-row">
+										<div>
+											<img ng-src="{{link_preview.image}}" style="height:95px;width:95px; background-color: white"/>
+										</div>
+										<div style="background-color:hsl(0,0%,0%, 0.1);max-height: 95px;width: 550px">
+											<div style="font-size: 15px;font-weight: 600;padding: 5px 5px 2px 5px;">{{link_preview.title}}</div>
+											<div style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 15px;padding: 0px 5px 1px 5px;">{{link_preview.description}}</div>
+											<p style="color:grey;font-size: 15px; padding: 0px 1px 3px 5px;">{{link_preview.hostname}}
+											</p>
+										</div>
+										<div>
+											<!-- Close -->
+											<i class="fas fa-times" ng-click="closeLinkPreview()" style="padding-left: 5px; padding-right: 5px; color: grey; cursor:pointer;"></i>
+										</div>
+									</div>
+								</a>
+								
+
+					<!--Real-Time Link Preview End -->
+
 					<!-- Input -->
 					<div ng-class = "{'d-flex justify-self-end align-items-center flex-row': message_area_show, 'd-none justify-self-end align-items-center flex-row': !message_area_show}" id="input-area" >
 						<a href="#"><i class="far fa-smile text-muted px-3" style="font-size:1.5rem;"></i></a>
-						<input ng-model="input_message_text" ng-keydown="$event.keyCode === 13 && sendMessage()" type="text" name="message" id="input" placeholder="Type a message" class="flex-grow-1 border-0 px-3 py-2 my-3 rounded shadow-sm">
+						<input ng-model="input_message_text" ng-change="inputTextChanged()" ng-keydown="$event.keyCode === 13 && sendMessage()" type="text" name="message" id="input" placeholder="Type a message" class="flex-grow-1 border-0 px-3 py-2 my-3 rounded shadow-sm">
 						<i class="fas fa-paper-plane text-muted px-3" style="cursor:pointer;" ng-click="sendMessage()"></i>
 					</div>
 				</div>

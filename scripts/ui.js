@@ -53,6 +53,8 @@ let getStatusColor = (status) => {
 
 let getFileIcon = (f) =>{
 
+    if(!isValid(f))
+	return;
 
     var type = f.filetype;
     if(undefined == type)
@@ -86,10 +88,10 @@ let getFileIcon = (f) =>{
 
 }
 
-let getFileType = (f) =>{
+let getFileTypeDescription = (f) =>{
 
     var type = f.filetype;
-    if(undefined == type)
+    if(!isValid(type))
         return "";
 
     var fileType = "Attachment";
@@ -115,6 +117,10 @@ let getFileType = (f) =>{
                     fileType = "Location";
     }
 
+    //xxTODOxx: For link preview
+    // if(isValidString(f.launchurl))
+    //     filetype = "Link"
+
     return fileType;
 
 }
@@ -127,10 +133,7 @@ let isSentMessage = (status) =>{
 };
 
 
-//For debugging purposes only
-let getScope = () =>{
-        return angular.element(document.getElementById('mesibowebapp')).scope();
-}
+
 
 let imgError = (image) => {
     MesiboLog("imgError");
@@ -139,7 +142,22 @@ let imgError = (image) => {
     return true;
 }
 
+/*** For debugging purposes only **/
+let getScope = () =>{
+    return angular.element(document.getElementById('mesibowebapp')).scope();
+}
 
+/** For testing link preview **/ 
+let getSampleLinkPreview = () =>{
+    var linkPreview = {};
+    linkPreview.title = "Chat API and SDK for Messaging, Voice and Video Call | Android, iOS and Website | mesibo";
+    linkPreview.image = "https://mesibo.com/assets/images/mesibo-favicon.png";
+    linkPreview.description = "mesibo is a real-time communication platform, provides chat API and messaging SDK to add messaging, voice and video calls in Android & iOS apps and websites. It is Free to start."; 
+    linkPreview.hostname = "mesibo.com";
+    linkPreview.url = "https://mesibo.com/";
+    
+    return linkPreview;
+}
 
 
 

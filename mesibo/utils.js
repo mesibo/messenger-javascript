@@ -84,5 +84,16 @@ let isGroup = (user) => {
         return (user.groupid > 0);
 }
 
+const getUrlInText = (text) => {
+        //This function returns the first url it finds in text, empty string if no url is found
+        if(!isValidString(text))
+                return "";
+        var matches = text.match(/\bhttps?:\/\/\S+/gi);
+        if(!isValid(matches) || matches.length == 0)
+                return "";
+
+        return matches[0];
+}
+
 
 

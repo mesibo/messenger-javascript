@@ -61,7 +61,7 @@
 						<div class="Messenger_content" style="overflow: hidden;">
 							<div class="Messages" id='scrollMessage'>
 								<div class="Messages_list" id="msglist">
-									<div ng-repeat="m in messageSession.messages" ng-class="{'outgoing_msg':isSent(m),'incoming_msg':isReceived(m)}">
+									<div ng-repeat="m in messageSession.getMessages()" ng-class="{'outgoing_msg':isSent(m),'incoming_msg':isReceived(m)}">
 										<div ng-class="{'sent_msg':isSent(m), 'received_msg':isReceived(m)}">
 											<a ng-show = "isFileMsg(m)" ng-href="{{isFileMsg(m)? m.fileurl:''}}" target="_blank" style="max-width: 200px;" >
 												<div ng-show='isImageMsg(m)' class= "image-holder"><img ng-src= "{{m.fileurl}}" style="cursor:pointer;" />

@@ -176,6 +176,10 @@ function createXMLHTTPObject() {
     localStorage.setItem("MESIBO_MESSENGER_TOKEN", token);
     return 0;
   }
+ 
+  function deleteTokenInStorage(){
+    localStorage.removeItem("MESIBO_MESSENGER_TOKEN")
+  }
 
   function getTokenFromStorage(){
     var token = localStorage.getItem("MESIBO_MESSENGER_TOKEN");
