@@ -1,6 +1,6 @@
 //utils.js
 
-/** Copyright (c) 2019 Mesibo
+/** Copyright (c) 2020 Mesibo
  * https://mesibo.com
  * All rights reserved.
  *
@@ -58,7 +58,7 @@ let isValidFileType = (fName, fType)=> {
     var extensionLists = {}; //Create an object for all extension lists
     extensionLists.video = ['m4v', 'avi', 'mpg', 'mp4', 'webm'];
     extensionLists.image = ['jpg', 'gif', 'bmp', 'png'];
-    extensionLists.audio = ['mp3', 'mp4', 'aac', 'flac', 'm4a', 'wva'];
+    extensionLists.audio = ['mp3', 'mp4', 'aac', 'flac', 'm4a', 'wav','wva'];
     extensionLists.document = ['doc', 'txt', 'pdf', 'docx', 'xls', 'xlx'];
     return extensionLists[fType].indexOf(fName.split('.').pop()) > -1;
 }

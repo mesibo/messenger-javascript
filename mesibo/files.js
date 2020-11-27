@@ -1,6 +1,6 @@
 // files.js
 
-/** Copyright (c) 2019 Mesibo
+/** Copyright (c) 2020 Mesibo
  * https://mesibo.com
  * All rights reserved.
  *
@@ -37,10 +37,10 @@
  * https://mesibo.com/documentation/
  *
  * Source Code Repository
- * https://github.com/mesibo/samples/js-beta
+ * https://github.com/mesibo/messenger-javascript
  *
  *
- */
+*/
 
 function MesiboFile(s) {
 	this.scope = s;
@@ -83,8 +83,9 @@ MesiboFile.prototype.sendFile = function(pFileType, pFileurl, pThumbnail){
 	f.fileurl = pFileurl;
 	if(isValid(pThumbnail))
 		f.tn = pThumbnail;
-	if(this.scope.input_file_caption!="")
-		f.title = this.scope.input_file_caption;
+	if(this.scope.input_file_caption!=""){
+		f.message = this.scope.input_file_caption;
+	}
 
 	MesiboLog("---Sending File---", m, m.id, f);
 	this.api.sendFile(m, m.id, f);
@@ -137,11 +138,12 @@ MesiboFile.prototype.sendResizedImage = function(file, max_width, max_height, im
 	context = canvas.getContext('2d');
 
 	// check for an image then
-	//trigger the file loader to get the data from the image         
+	//trigger the file loader to get the data from the image 	     
 	if (file.type.match('image.*')) {
 		fileLoader.readAsDataURL(file);
 	} else {
-		alert('File is not an image');
+		console.log("file.type", file.type, file) 
+		alert('File is not an image')		  
 	}
 
 	// setup the file loader onload function
@@ -305,5 +307,6 @@ MesiboFile.prototype.sendWithThumbnail = function(blob, imgUrl) {
 	}
 	reader.readAsArrayBuffer(blob);
 }
+
 
 

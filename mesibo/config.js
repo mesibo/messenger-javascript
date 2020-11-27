@@ -1,6 +1,6 @@
 // config.js
 
-/** Copyright (c) 2019 Mesibo
+/** Copyright (c) 2020 Mesibo
  * https://mesibo.com
  * All rights reserved.
  *
@@ -37,7 +37,7 @@
  * https://mesibo.com/documentation/
  *
  * Source Code Repository
- * https://github.com/mesibo/samples/js-beta
+ * https://github.com/mesibo/messenger-javascript
  *
  *
  */
@@ -49,7 +49,8 @@
  * In that case, no need to configure token here
  * 
  */
-var MESIBO_ACCESS_TOKEN = "";
+var MESIBO_ACCESS_TOKEN = ""; 
+
 /* App ID used to create a user token. */
 var MESIBO_APP_ID = "web";
 
@@ -78,17 +79,19 @@ if(!isContactSync){
 	 */
 	var MESIBO_LOCAL_CONTACTS =[
 	{	
-		 'address' : '91XXXXXXXXX'
+		 'address' : '123'
 		,'groupid' : 0	 
 		,'picture' : 'images/profile/default-profile-icon.jpg'
-		,'name'    : 'Contact Name'
-		,'status'  : 'Contact status'
+		,'name'    : 'Mesibo User'
+		,'status'  : 'Online'
 	},
 	
-	{	 'address' : ''
-		,'groupid' : 1234 	 
+	{	
+		 'address' : ''
+		,'groupid' : 1234	 
 		,'picture' : 'images/profile/default-group-icon.jpg'
-		,'name'    : 'Group Name'
+		,'name'    : 'Mesibo Group'
+		,'status'  : 'Online'
 	},
 
 	]
@@ -113,7 +116,7 @@ const LINK_DEFAULT_IMAGE = "images/file/default-link-icon.jpg"
 const POPUP_DISPLAY_NAME = "Mesibo"
 const POPUP_DISPLAY_PICTURE = "images/profile/default-profile-icon.jpg"
 /* A destination where the popup demo app will send message or make calls */
-const POPUP_DESTINATION_USER = 'js_user';
+const POPUP_DESTINATION_USER = "dest" 
 
 /************************ Popup Config End *****************************/
 

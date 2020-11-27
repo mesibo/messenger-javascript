@@ -11,20 +11,20 @@ There are two sample applications:
 - One-to-One messaging, Voice and Video Call
 - Group Messaging
 - Read receipts
-- Sending Files 
+- Sending Files
+- Record and Send live audio from microphone
+- Send photos captured live using Webcam
 - Chat history
 - Link Preview 
+- Multi-Device Synchronization(*Supported if you are using mesibo On-Premise)
 
 ### Features under implementation
 - Sending typing indicators and activity 
-- Creating group
-- Live Link Preview 
 - Date header in message area
 - Forwarding Messages
 - Deleting Messages
 - Reply to Messages
 - File upload and download progress 
-- Group conference calls
 
 ## Instructions
 

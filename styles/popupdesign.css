@@ -139,10 +139,11 @@
 	display: inline-block;
 	padding: 0 0 0 10px;
 	vertical-align: top;
-	max-width: 60%;
+	max-width: 70%;
+	min-width: 40%;
 
 	background: #ebebeb none repeat scroll 0 0;
-	border-radius: 12px 12px 12px 0;
+	border-radius: 7px 7px 7px 7px;
 	color: #646464;
 	font-size: 14px;
 	margin: 0;
@@ -192,10 +193,11 @@
 
 .sent_msg {
 	float: right;
-	max-width: 60%;
+	max-width: 70%;
+	min-width: 40%;
 	background:#dcf8c6;
 	/*display: block;*/
-	border-radius: 12px 12px 0 12px;
+	border-radius: 7px 7px 7px 7px;
 	font-size: 14px;
 	margin: 0;
 	padding: 5px 10px 5px 12px;
@@ -205,12 +207,12 @@
 
 .outgoing_msg {
 	overflow: hidden;
-	padding-bottom: 1px;
+	padding-bottom: 4px;
 }
 
 .incoming_msg {
 	overflow: hidden;
-	padding-bottom: 1px;
+	padding-bottom: 4px;
 }
 
 
