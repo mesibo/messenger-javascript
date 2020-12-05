@@ -20,7 +20,7 @@
 }
 
 #navbar {
-	background: #009688;
+	background: #00868b;
 	min-height: 72px;
 }
 
@@ -125,7 +125,7 @@
 #profile-pic {
 	cursor: pointer;
 	position: relative;
-	width: 200px;
+	width: 100px;
 }
 
 .profile-input {
@@ -191,23 +191,11 @@
 }
 
 .image-holder{
-    max-width: 250px;
+    width: 250px;
     overflow: hidden;
 }
 
-.image-holder img{
-  max-width:100%;
-  max-height:auto;
-} 
 
-.file-preview-holder{
-	max-width: 800px;
-}
-
-.file-preview-holder img{
-	max-width: 100%;
-	max-height: auto;
-}
 
 .message-list {
     flex: 1 1 0; 
@@ -215,3 +203,14 @@
     flex-direction: column;
     overflow-y: hidden;
 }
+
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+}
+

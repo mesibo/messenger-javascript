@@ -1,4 +1,4 @@
-//core.js
+//app.js
 
 /** Copyright (c) 2020 Mesibo
  * https://mesibo.com
@@ -56,42 +56,57 @@ MesiboApp.prototype.init = function() {
 }
 
 MesiboApp.prototype.displayContacts = function(contacts){
-	if(!isValid(contacts))
+	if(!contacts)	
 		return -1;
 	this.scope.setAvailableUsers(contacts);
 	return 0;
 };
 
-MesiboApp.prototype.fetchContacts = async function(userToken, ts, phones) {
-	MesiboLog("fetchContacts called");
-	if(!isValidString(userToken))
+MesiboApp.prototype.fetchContacts = async function(userToken, ts, phones, reset) {
+	MesiboLog("fetchContacts called", phones);
+
+	if(!userToken)
 		return -1;
-	if(!isValid(ts))
-		ts = 0;
-	if(!isValid(phones) || !isValid(phones.length) || !phones.length)
+
+	if(!(phones && phones.length))	
 		phones = [];
 
-	if(!isValidString(MESIBO_API_URL))
+	if(!MESIBO_API_URL)
 		return -1;
+
 	//Request to back-end service, to fetch contact details and profile details
-	const response = await fetch(MESIBO_API_URL + '?op=getcontacts&token=' + userToken + '&ts=' + ts+ '&phones='+ phones);
+	var request = MESIBO_API_URL + '?op=getcontacts&token=' + userToken + '&ts=' + ts+ '&phones='+ phones;
+	if(reset)
+		request += '&reset=1';
 
-	const contacts_bundle = await response.json(); //extract JSON from the HTTP response
-	MesiboLog(contacts_bundle);
+	var response = await fetch(request);
 
-	if(contacts_bundle.result!="OK"){
+	if(!response)
+		return -1;
+
+	try{
+		response = await response.json(); //extract JSON from the HTTP response
+		MesiboLog(response);
+	}
+	catch(e){
+		MesiboLog("Error: fetchContacts", e);
+	}
+
+	if(response.result != "OK"){
 		MesiboLog("Error: fetchContacts: getcontacts request failed");	
 		return -1;
 	}
+	
+	if(response.u){
+		this.scope.setSelfProfile(response.u);
+	}
 
-	this.scope.self_user = contacts_bundle.u;
-
-	MESIBO_DOWNLOAD_URL =  contacts_bundle['urls']['download'];      
-	MESIBO_UPLOAD_URL =  contacts_bundle['urls']['upload'] ;
+	MESIBO_DOWNLOAD_URL =  response['urls']['download'];      
+	MESIBO_UPLOAD_URL =  response['urls']['upload'] ;
 
 
-	var contacts = contacts_bundle.contacts;
-	if(!isValid(contacts) || !contacts.length)
+	var contacts = response.contacts;
+	if(!(contacts && contacts.length))
 		return -1;
 
 	var available_contacts =  []; 
@@ -109,7 +124,6 @@ MesiboApp.prototype.fetchContacts = async function(userToken, ts, phones) {
 			c.members = elem.members;
 
 		var rv = this.api.setContact(c);
-
 
 		available_contacts.push(c);
 

@@ -130,15 +130,14 @@ function createXMLHTTPObject() {
 
   function _getPhoneNumber(){
     var phone = document.getElementById("phone").value;
-    if(!isValidString(phone))
+    if(!phone)
       return "";
 
     //xxx:Validate Phone Number
-    if(phone[0] != '+'){
-        alert("Enter phone number with country code, (without spaces) starting with + .Example, if country code is 91 enter: +91XXXXXXXXXX");
-        return "";
+    if(phone[0] == '+'){
+        phone = phone.substr(1); //Strip +
     }
-    phone = phone.substr(1); //Strip +
+    
     return phone;
   }
 
@@ -167,11 +166,11 @@ function createXMLHTTPObject() {
       if(isValidString(code)){
           //Login with OTP
           console.log("gen with otp");
-          sendRequest("https://app.mesibo.com/api.php", appCallback, "op=login&phone=" + phone + "&appid=" + appid + "&code=" + code);
+          sendRequest(MESIBO_API_URL, appCallback, "op=login&phone=" + phone + "&appid=" + appid + "&code=" + code);
       }
       else if(isValidString(phone)){
           //Register Phone to get OTP
-          sendRequest("https://app.mesibo.com/api.php", appCallback, "op=login&phone=" + phone + "&appid=" + appid);
+          sendRequest(MESIBO_API_URL, appCallback, "op=login&phone=" + phone + "&appid=" + appid);
           document.getElementById('phone').readOnly = true;
           document.getElementById("otp-input").style.display = "block";
           document.getElementById("otp").innerHTML = "";
@@ -180,10 +179,11 @@ function createXMLHTTPObject() {
   }
 
   function _displayLoginError(error) {
-    alert("Login Error: " + error);
+    alert("Login Error: " + error + "\n Please ensure you have entered a valid phone number & otp");
   }
 
   function appCallback(r) { 
+    
     var resp = JSON.parse(r);
     var token = resp['token'];
     if(resp.result == "OK"){
@@ -222,7 +222,7 @@ function createXMLHTTPObject() {
   }
  
   function deleteTokenInStorage(){
-    localStorage.removeItem("MESIBO_MESSENGER_TOKEN")
+    localStorage.removeItem("MESIBO_MESSENGER_TOKEN");
   }
 
   function getTokenFromStorage(){

@@ -42,6 +42,8 @@
  *
 */
 
+const MESIBO_FILETYPE_OTHER = 10;
+
 function MesiboFile(s) {
 	this.scope = s;
 	this.api ={};
@@ -54,10 +56,6 @@ MesiboFile.prototype.init = function(){
 
 
 MesiboFile.prototype.getFileType = function(filename){
-    const MESIBO_FILETYPE_IMAGE = 1;
-    const MESIBO_FILETYPE_VIDEO = 2;
-    const MESIBO_FILETYPE_AUDIO = 3;
-    const MESIBO_FILETYPE_OTHER = 10;
 
 	if(isValidFileType(filename, 'image'))
 		return MESIBO_FILETYPE_IMAGE;
@@ -70,7 +68,10 @@ MesiboFile.prototype.getFileType = function(filename){
 }
 
 //Send files like image, video, documents, etc
-MesiboFile.prototype.sendFile = function(pFileType, pFileurl, pThumbnail){
+MesiboFile.prototype.sendFile = function(pFileType, pFileurl, pThumbnail, pFileName){
+
+	if(!pFileurl)
+		return;
 
 	var m = {};
 	m.id = this.api.random();
@@ -81,10 +82,13 @@ MesiboFile.prototype.sendFile = function(pFileType, pFileurl, pThumbnail){
 	var f = {}
 	f.filetype = pFileType;
 	f.fileurl = pFileurl;
-	if(isValid(pThumbnail))
+	if(pFileName)
+			f.title = pFileName;
+
+	if(pThumbnail)
 		f.tn = pThumbnail;
 	if(this.scope.input_file_caption!=""){
-		f.message = this.scope.input_file_caption;
+		f.message = this.scope.input_file_caption;		
 	}
 
 	MesiboLog("---Sending File---", m, m.id, f);
@@ -120,7 +124,7 @@ MesiboFile.prototype.dataURItoBlob = function(dataURI) {
 	return blob;
 
 }
-MesiboFile.prototype.sendResizedImage = function(file, max_width, max_height, imageEncoding, imgUrl) {
+MesiboFile.prototype.sendResizedImage = function(file, max_width, max_height, imageEncoding, imgUrl, filename) {
 	var fileLoader = new FileReader()
 		, canvas = document.createElement('canvas')
 		, context = null
@@ -178,7 +182,7 @@ MesiboFile.prototype.sendResizedImage = function(file, max_width, max_height, im
 			
 			MesiboLog(mesiboFileCtx);
 			blob = mesiboFileCtx.dataURItoBlob(canvas.toDataURL(imageEncoding));
-			mesiboFileCtx.sendWithThumbnail(blob, imgUrl)
+			mesiboFileCtx.sendWithThumbnail(blob, imgUrl, filename)
 
 		}
 	};
@@ -198,13 +202,16 @@ MesiboFile.prototype.sendResizedImage = function(file, max_width, max_height, im
 MesiboFile.prototype.uploadSendFile = async function() {
 
 	var f = this.scope.selected_file;
-	MesiboLog(f.name);
-	if(!isValidString(f.name))
+	MesiboLog(f.name, f);
+	if(!f.name)
 		return -1;
-	//Validate file type before proceeding. Only images handled here
+	
+	//TODO: Validate file type before proceeding.
 	const formData = new FormData();
 
-	formData.append('file', f);
+	formData.append('file', f, f.name);
+
+	MesiboLog("Uploading file...", formData.getAll('file'));
 
 	const options = {
 		method: 'POST'
@@ -212,24 +219,29 @@ MesiboFile.prototype.uploadSendFile = async function() {
 
 	};
 
+	MesiboLog("File upload options:", options);
+
 	const response = await fetch(MESIBO_UPLOAD_URL + '?op=upload&token=' + MESIBO_ACCESS_TOKEN
 		, options);
 
 	const file_upload_response = await response.json();
 	MesiboLog(file_upload_response);
 	const file_url = file_upload_response['file'];
-	if(!isValidString(file_url)){
-		MesiboLog("Invalid file_url");
+	if(!file_url){
+		alert("Failed to upload file.");
 		return -1;
 	}
 
 	MesiboLog(file_url, f.name);
 	//For Image
-	if(1 == this.getFileType(f.name))
-		this.sendResizedImage(f, 20, 20, 'base64', file_url); //Compression required
-	else
-		this.sendFile(this.getFileType(f.name), file_url, null);
-
+	if(1 == this.getFileType(f.name)){
+		this.sendResizedImage(f, 20, 20, 'base64', file_url, f.name); //Compression required
+	}
+	else{
+		this.sendFile(this.getFileType(f.name), file_url, null, f.name);
+		// this.scope.scrollToLastMsg();
+		scrollToEnd(true);
+	}	
 }
 
 MesiboFile.prototype.getLinkPreviewJson = async function(pUrl,pPreviewEndpoint, pServiceKey){
@@ -298,12 +310,12 @@ MesiboFile.prototype.sendMessageWithUrlPreview = function(linkPreview, messagePa
 		MesiboLog("Error: sendMessageWithUrlPreview: Invalid linkPreview");
 }
 
-MesiboFile.prototype.sendWithThumbnail = function(blob, imgUrl) {
+MesiboFile.prototype.sendWithThumbnail = function(blob, imgUrl, filename) {
 	const mesiboFileCtx = this;
 	var reader = new FileReader();
 	reader.onloadend = function() {
 		var tn_array = new Uint8Array(reader.result); //reader.result from base64
-		mesiboFileCtx.sendFile(1, imgUrl, tn_array); //Sending Image
+		mesiboFileCtx.sendFile(1, imgUrl, tn_array, filename); //Sending Image
 	}
 	reader.readAsArrayBuffer(blob);
 }

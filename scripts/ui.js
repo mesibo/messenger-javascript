@@ -77,6 +77,7 @@ let getStatusClass = (status) => {
         return statusTick;
 };
 
+
 // If the status value is read type, color it blue. Default color of status icon is gray
 let getStatusColor = (status) => {
         var statusColor = "";
@@ -177,8 +178,6 @@ let isSentMessage = (status) =>{
 };
 
 
-
-
 let imgError = (image) => {
     MesiboLog("imgError");
     image.onerror = "";
@@ -204,9 +203,64 @@ let getSampleLinkPreview = () =>{
 }
 
 
-let updateScroll = () =>{
+let scrollToEnd = (animate) =>{
     var objDiv = document.getElementById("messages");
-    MesiboLog("Scroll to last", objDiv, objDiv.scrollTop);
-    objDiv.scrollTop = objDiv.scrollHeight;
+    if(!objDiv)
+        return;
+
+    // MesiboLog("Scroll to last", objDiv, objDiv.scrollTop);
+    if(animate)        
+        $("#messages").animate({ scrollTop: objDiv.scrollHeight}, 800);
+    else
+        objDiv.scrollTop = objDiv.scrollHeight;
+
+
+}
+
+
+
+let adjustImageDims = (e)=>{
+
+    // MesiboLog("adjustImageDims", e);
+    if(!e)
+        return;
+
+
+    var w = e.width;
+    var h = e.height;
+
+
+    if(!(w && h))
+        return;
+
+    var ar = w/h;
+
+    if(ar < 1){
+        // MesiboLog("adjustImageDims", e.style.maxWidth);
+        e.style.objectFit = "cover";
+    }
+
+}
+
+
+let adjustVideoDims = (e)=>{
+    
+    // MesiboLog("adjustVideoDims", e);
+    if(!e)
+        return;
+
+    var w = e.videoWidth;
+    var h = e.videoHeight;
+
+    if(!(w && h))
+        return;
+
+
+    var ar = w/h;
+
+    if(ar < 1){
+        // MesiboLog("adjustImageDims", e.style.maxWidth);
+        e.style.objectFit = "cover";
+    }
 }
 

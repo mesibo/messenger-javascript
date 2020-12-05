@@ -57,7 +57,7 @@ let isValidString = (ele)=>{
 let isValidFileType = (fName, fType)=> {
     var extensionLists = {}; //Create an object for all extension lists
     extensionLists.video = ['m4v', 'avi', 'mpg', 'mp4', 'webm'];
-    extensionLists.image = ['jpg', 'gif', 'bmp', 'png'];
+    extensionLists.image = ['jpg', 'jpeg', 'gif', 'bmp', 'png'];
     extensionLists.audio = ['mp3', 'mp4', 'aac', 'flac', 'm4a', 'wav','wva'];
     extensionLists.document = ['doc', 'txt', 'pdf', 'docx', 'xls', 'xlx'];
     return extensionLists[fType].indexOf(fName.split('.').pop()) > -1;
@@ -68,10 +68,17 @@ let isValid = (ele)=>{
 };
 
 let isValidImage = (fName) =>{
-    if(!isValidString(fName))
+    if(!fName)
         return false;
         
     return isValidFileType(fName, 'image');
+};
+
+let isValidVideo = (fName) =>{
+    if(!fName)
+        return false;
+        
+    return isValidFileType(fName, 'video');
 };
 
 let isGroup = (user) => {

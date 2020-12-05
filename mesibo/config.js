@@ -46,7 +46,7 @@
  * https://mesibo.com/documentation/tutorials/first-app/
  *
  * Note, that if you are using logging in with your phone, Mesibo will generate the token.
- * In that case, no need to configure token here
+ * In that case, there is no need to configure token here
  * 
  */
 var MESIBO_ACCESS_TOKEN = ""; 
@@ -57,7 +57,7 @@ var MESIBO_APP_ID = "web";
 /* If you are hosting Mesibo backend on your own server, change this accordingly.
  * Refer https://github.com/mesibo/messenger-app-backend
  */
-const MESIBO_API_URL = "https://app.mesibo.com/api.php";
+const MESIBO_API_URL = "https://app.mesibo.com/messenger/api.php";
 
 /* Default images */
 const MESIBO_DEFAULT_PROFILE_IMAGE = "images/profile/default-profile-icon.jpg";
@@ -70,37 +70,40 @@ var MESIBO_UPLOAD_URL = "https://s3.mesibo.com/api.php";
 /************************ Messenger Config Start *****************************/
 
 /* Toggle for using phone Login*/
-const isLoginEnabled = true;
+var isLoginEnabled = true;
+
 /* Toggle for synchronizing contacts*/
 var isContactSync = true;
-if(!isContactSync){
-	/*If you do not perform contact sync, define local contacts to be loaded
-	 * in list of available users
-	 */
-	var MESIBO_LOCAL_CONTACTS =[
-	{	
-		 'address' : '123'
-		,'groupid' : 0	 
-		,'picture' : 'images/profile/default-profile-icon.jpg'
-		,'name'    : 'Mesibo User'
-		,'status'  : 'Online'
-	},
-	
-	{	
-		 'address' : ''
-		,'groupid' : 1234	 
-		,'picture' : 'images/profile/default-group-icon.jpg'
-		,'name'    : 'Mesibo Group'
-		,'status'  : 'Online'
-	},
 
-	]
-}
+/* Toggle for synchronizing messages
+*  See https://mesibo.com/documentation/tutorials/get-started/synchronization/
+*/
+var isMessageSync = false;
 
-/* (Optional) Phone numbers of contacts who are using mesibo,
- * can be used for synchronization in getcontacts API 
- */
-const MESIBO_PHONES_ARRAY=[];
+/* (Optional) You can provide a list of contacts/groups,
+* for displaying a list of users to chat with and contact synchronization 
+
+For example:
+var MESIBO_LOCAL_CONTACTS =[
+
+{	
+	"address" : "18885551001",
+	"groupid" : 0,
+	"picture" : "images/profile/default-profile-icon.jpg",
+	"name"    : "MesiboTest",
+	"status"  : "Let's Chat.."
+},
+
+{	
+	"groupid" : 104661,	 
+	"picture" : "images/profile/default-group-icon.jpg",
+	"name"    : "Mesibo Group",
+	"members" : "1:123,456,789"		//Members list. Add 1: to mark as admin
+},
+
+]
+**/
+MESIBO_LOCAL_CONTACTS = [];
 
 /*Optional link preview*/
 const isLinkPreview = false; //Set to false if link preview not required
@@ -116,7 +119,7 @@ const LINK_DEFAULT_IMAGE = "images/file/default-link-icon.jpg"
 const POPUP_DISPLAY_NAME = "Mesibo"
 const POPUP_DISPLAY_PICTURE = "images/profile/default-profile-icon.jpg"
 /* A destination where the popup demo app will send message or make calls */
-const POPUP_DESTINATION_USER = "dest" 
+const POPUP_DESTINATION_USER = "xxx" 
 
 /************************ Popup Config End *****************************/
 
@@ -125,3 +128,5 @@ const POPUP_DESTINATION_USER = "dest"
 isDebug = true ;// toggle this to turn on / off for global control
 if (isDebug) var MesiboLog = console.log.bind(window.console);
 else var MesiboLog = function() {}
+
+var ErrorLog = console.log.bind(window.console);
