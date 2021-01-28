@@ -1708,8 +1708,8 @@ mesiboWeb.controller('AppController', ['$scope', '$window', '$anchorScroll', fun
 			$scope.mesibo = new Mesibo();
 			if(demo_app_name == "multitab-popup"){
 				// Instead of directly accessing Mesibo APIs like so,
-                // $scope.mesibo = new Mesibo();
-                // use a wrapper API that uses a shared worker 
+                		// $scope.mesibo = new Mesibo();
+                		// use a wrapper API that uses a shared worker 
 				$scope.mesibo = new MesiboWorker($scope);
 			}
 
@@ -1751,7 +1751,7 @@ mesiboWeb.controller('AppController', ['$scope', '$window', '$anchorScroll', fun
 
 			$scope.mesibo.start();   
 			
-			if(demo_app_name == "shared-popup"){
+			if(demo_app_name == "multitab-popup"){
 				//Contact synchronization is not required for shared-popup
 				isContactSync = false;
 				$scope.is_shared = true;
