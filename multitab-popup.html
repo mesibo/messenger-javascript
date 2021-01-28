@@ -12,6 +12,7 @@
     <script src="https://netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="https://api.mesibo.com/mesibo.js" crossorigin="anonymous"></script> 
     <script type="text/javascript" src="mesibo/config.js"></script>
+    <script type="text/javascript" src="scripts/mesibo-worker.js"></script>
     <script type="text/javascript" src="scripts/controller.js"></script>
     <script type="text/javascript" src="scripts/ui.js"></script>
     <script type="text/javascript" src="mesibo/utils.js"></script>		
@@ -40,9 +41,10 @@
                   <p class="text-white-small" style=" font-size:11px" id="status_indicator" >{{selected_user.activity}}</p>
                 </div>
                 <span class="chat_features">
-                  <i id="video-button" class="fas fa-video" style="padding-right: 5px" ng-click="makeVideoCall()"></i>
+                  <!-- <i id="video-button" class="fas fa-video" style="padding-right: 5px" ng-click="makeVideoCall()"></i>
                   <i id="audio-button" class="fas fa-phone fa-flip-horizontal" style="padding-right: 5px" ng-click="makeVoiceCall()"></i>
-                  <i ng-click="openPictureRecorder()" id="capture-photo" class="fas fa-camera" style="padding-right: 5px; margin-left: 5px"></i>
+		  -->
+		  <i ng-click="openPictureRecorder()" id="capture-photo" class="fas fa-camera" style="padding-right: 5px; margin-left: 5px"></i>
                   <i ng-click="openAudioRecorder()" id="capture-audio" class="fas fa-microphone" style="padding-right: 5px"></i>
                   <span style="padding-left: 10px" class="chat_close">
                     <svg viewBox="0 0 12 12" width="14px" height="14px">
@@ -279,7 +281,7 @@
     </div>
     <script type="text/javascript">
       $(document).ready(function(){
-      	angular.element(document.getElementById('mesibowebapp')).scope().initMesibo('popup');
+      	angular.element(document.getElementById('mesibowebapp')).scope().initMesibo('multitab-popup');
       	$(".chat_on").click(function(){
       		$(".Layout").toggle();
       		$(".chat_on").hide(300);
