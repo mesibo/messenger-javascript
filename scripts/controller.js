@@ -113,6 +113,13 @@ mesiboWeb.directive('onFinishRender', function($timeout) {
   };
 });
 
+mesiboWeb.directive("getTarget", function() {
+    return {
+        link: function(scope, element, attrs) {
+            console.log(element);
+        }
+    }
+});
 
 mesiboWeb.controller('AppController', ['$scope', '$window', '$anchorScroll', function ($scope, $window, $anchorScroll) {
 
@@ -351,6 +358,17 @@ mesiboWeb.controller('AppController', ['$scope', '$window', '$anchorScroll', fun
 		return true;
 	}
 
+	$scope.showMessageHeader = function(m) {
+		return (m.isForwarded() || m.isReply() || m.isModified());
+	}
+	
+	$scope.getMessageHeader = function(m) {
+		if(m.isForwarded()) return "Forwarded";
+		if(m.isReply()) return "Reply";
+		if(m.isModified()) return "Edited";
+		return "";
+	}
+
 	$scope.isSent = function(msg){
 		return isSentMessage(msg.status);
 	}
@@ -377,7 +395,7 @@ mesiboWeb.controller('AppController', ['$scope', '$window', '$anchorScroll', fun
 		var dir = "Missed";
 		if(m.isIncomingCall()) dir = "Incoming";
 		else if(m.isOutgoingCall()) dir = "Outgoing";
-		return dir + " " + type + " call at " + m.getTime();
+		return dir + " " + type + " call at " + m.getTimestamp().getTime();
 	}
 	
 	$scope.getFormattedMessageText = function(m) {
@@ -701,7 +719,7 @@ mesiboWeb.controller('AppController', ['$scope', '$window', '$anchorScroll', fun
 		if(!isValid(m))
 			return "";
 
-		if($scope.isReceived(m)){
+		if($scope.isReceived(m) || MESIBO_MSGSTATUS_EMPTY == m.status){
 			return "";
 		}
 
@@ -872,8 +890,7 @@ mesiboWeb.controller('AppController', ['$scope', '$window', '$anchorScroll', fun
 
 	$scope.sessionReadSummary = function(){
 		$scope.summary.length = 0;
-		$scope.summarySession = new MesiboReadSession($scope.summaryListener);
-		$scope.summarySession.enableSummary(true);
+		$scope.summarySession = MesiboReadSession.createReadSummarySession($scope.summaryListener);
 		$scope.summarySession.readCount = MAX_MESSAGES_READ_SUMMARY;
 		$scope.summarySession.read(MAX_MESSAGES_READ_SUMMARY);
 	}
@@ -978,7 +995,7 @@ mesiboWeb.controller('AppController', ['$scope', '$window', '$anchorScroll', fun
 		return;
 	}
 	
-	$scope.Mesibo_onSync = function(count) {
+	$scope.Mesibo_onSync = function(rs, count) {
 		if(!count) return;
 		$scope.messageSession.read(MAX_MESSAGES_READ);
 	}

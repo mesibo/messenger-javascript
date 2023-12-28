@@ -16,10 +16,7 @@
 	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.9/angular.min.js"></script>
 	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.9/angular-sanitize.js"></script>
 	<script type="text/javascript" src="https://webrtc.github.io/adapter/adapter-latest.js"></script>
-	<!-- Temporarily disabled for v2.2.0 code sample
-	<script type="text/javascript" src="https://api.mesibo.com/mesibo-v2.js" crossorigin="anonymous"></script> 
-	-->
-	 <script type="text/javascript" src="https://api.mesibo.com/mesibo-2.2.0.js" crossorigin="anonymous"></script> 
+	 <script type="text/javascript" src="https://cdn.mesibo.com/api/mesibo.js" crossorigin="anonymous"></script> 
 	  <script type="text/javascript" src="mesibo/config.js"></script>
 	  <script type="text/javascript" src="scripts/controller.js"></script>
 	  <script type="text/javascript" src="scripts/ui.js"></script>
@@ -212,14 +209,14 @@
 			    <i class="fas fa-comment-alt text-white" aria-hidden="true" ng-click="showAvailableUsers()" style="cursor:pointer; float: right;padding-top: 5px;" title="New Chat"></i>
 		    </button>
 		    <div ng-repeat="m in getMessages()" on-finish-render="onMessagesRendered" ng-show="isMessageVisible(m)" ng-class="{'align-self-end self p-1 mx-4 rounded bg-white shadow-sm message-item': isSent(m)&&m.isMessage(), 'align-self-start p-1 mx-4 rounded bg-white shadow-sm message-item': isReceived(m)&&m.isMessage(), 'align-self-center self p-1 mx-4 rounded bg-white shadow-sm message-item': !m.isMessage()}" style="margin-top: 4px">
-			    <div class="small font-italic" ng-show="m.isForwarded()">
-				    Forwarded
+			    <div class="small font-italic" ng-show="showMessageHeader(m)">
+				    {{ getMessageHeader(m) }}
 			    </div>
 			    <div class="small text-primary" ng-show="showName(m)" ng-click="generateMessageArea(getUserProfileFromMessage(m));">
 				    <span ng-style = "{'color':getNameColor(m) }">{{getSenderNameFromMessage(m)}}</span>
 			    </div>
 			    <div class="options" style="z-index: 100" ng-show="m.isMessage()">
-				    <a href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"><i class="fas fa-angle-down text-muted px-2"></i>
+				    <a href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"><i class="fas fa-angle-down text-muted px-2" ng-click="onOpenMessageOptions(m, $event)"></i>
 				    </a>
 				    <div class="dropdown-menu dropdown-menu-right">
 					    <a class="dropdown-item" style="cursor: pointer;" ng-attr-id="{{'deltime-' + m.mid}}" ng-show="showDeliveryTime(m)">Delivered</a>
