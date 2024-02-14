@@ -152,6 +152,7 @@ mesiboWeb.controller('AppController', ['$scope', '$window', '$anchorScroll', fun
 
 	//Main UI
 	$scope.display_profile = null;
+	$scope.display_image = null;
 	$scope.membersList = [];
 	$scope.users_panel_show = false;
 	$scope.message_area_show = false;
@@ -285,6 +286,11 @@ mesiboWeb.controller('AppController', ['$scope', '$window', '$anchorScroll', fun
 			$scope.self_profile_name = p.getName();
 		}
 		$scope.display_profile = p; 
+		$scope.display_image = $scope.display_profile.getImage();
+
+		// various profile information keys
+		var values = p.getValues();
+
 		$scope.membersList = [];
 		if(p.getGroupId() > 0) {
 			// you can either pass a function or listenr, this code list 
@@ -561,8 +567,8 @@ mesiboWeb.controller('AppController', ['$scope', '$window', '$anchorScroll', fun
 	$scope.hasPicture = function(m) {
 		var p = $scope.getProfileFromMessage(m);
 		if(!p) return false;
-		var pic = p.getThumbnail();
-		if(pic && pic.length > 10) return true;
+		var pic = p.getImage().getThumbnail();
+		if(pic) return true;
 		return false;
 	}
 
@@ -632,8 +638,8 @@ mesiboWeb.controller('AppController', ['$scope', '$window', '$anchorScroll', fun
 	$scope.getUserPicture = function(user){
 		if(!user) return '';
 		// MesiboLog(user);
-		var pic = user.getThumbnail();
-		if(pic && pic.length > 10) return pic;
+		var pic = user.getImage().getThumbnail();
+		if(pic) return pic;
 
 		return user.getGroupId() ? MESIBO_DEFAULT_GROUP_IMAGE:MESIBO_DEFAULT_PROFILE_IMAGE; 
 	} 
@@ -641,11 +647,20 @@ mesiboWeb.controller('AppController', ['$scope', '$window', '$anchorScroll', fun
 	$scope.getProfileImage = function(user){
 		if(!user) return '';
 		// MesiboLog(user);
-		var pic = user.getImageOrThumbnail();
-		if(pic && pic.length > 10) return pic;
+		//var pic = user.getImage().getImageOrThumbnail();
+		var pic = $scope.display_image.getImageOrThumbnail();
+		if(pic) return pic;
 
 		return user.getGroupId() ? MESIBO_DEFAULT_GROUP_IMAGE:MESIBO_DEFAULT_PROFILE_IMAGE; 
 	} 
+
+	$scope.changeProfilePicture = function() {
+		var i = $scope.display_image.getNext();
+		if(i)
+			$scope.display_image = i;
+		else 
+			$scope.display_image = $scope.display_profile.getImage(); // restart
+	}
 
 	$scope.getUserName = function(user){
 		if(!user) return "";
@@ -665,7 +680,7 @@ mesiboWeb.controller('AppController', ['$scope', '$window', '$anchorScroll', fun
 	$scope.getUserStatus = function(user){
 		// MesiboLog("getUserName", user);
 		if(!user) return "";
-		return user.getStatus();
+		return user.getString("status", "");
 	}
 	
 	$scope.getMemberType = function(m){
@@ -1304,6 +1319,8 @@ mesiboWeb.controller('AppController', ['$scope', '$window', '$anchorScroll', fun
 			}
 
 			var c = $scope.mesibo.getSelfProfile();
+			c.reset();
+			c.setName($scope.self_profile_name);
 			c.setImage(file);
 			c.save();
 
@@ -1382,6 +1399,10 @@ mesiboWeb.controller('AppController', ['$scope', '$window', '$anchorScroll', fun
 
 		$scope.connection_status = s;
 		$scope.refresh();
+	}
+
+	$scope.MesiboProfile_onPublish = function(p, result) {
+		MesiboLog("MesiboProfile_onPublish: " + result);	
 	}
 
 	$scope.Mesibo_onProfileUpdated = function(p){

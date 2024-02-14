@@ -115,7 +115,7 @@
 		    <!-- <img alt="Profile Photo" class="img-fluid rounded-circle my-5 justify-self-center mx-auto" id="profile-pic" ng-src="{{getUserPicture(display_profile)}}"> -->
 		    <button type="button" ng-click="selectProfilePicture()" class="btn btn-default edit-image-btn pull-right" style="position: absolute; right: 0;z-index: 5;margin:10px;background-color: transparent; border-color: transparent;" ng-show="display_profile.isSelfProfile()"> <i class="fa fa-edit text-white" aria-hidden="true"></i> </button>
 		    <input type="file" id="profile-pic-input" onchange="angular.element(this).scope().onProfileImageSelect(this)" class="d-none">
-		    <img alt="Profile Photo" class="img-fluid" id="profile-pic" ng-src="{{getProfileImage(display_profile)}}">
+		    <img alt="Profile Photo" class="img-fluid" id="profile-pic" ng-src="{{getProfileImage(display_profile)}}" ng-click="changeProfilePicture()">
 		    <div class="bg-white px-2 py-1">
 			    <div class="text-center" ng-show="display_profile.isSelfProfile()">
 				    <input style="margin-left: 3px;" ng-model="self_profile_name" type="text" name="self_profile_name" id="input" placeholder="Your Name" value="{{getUserName(display_profile)}}" class="flex-grow-1 border-0 px-3 py-2 my-3 rounded shadow-sm">
