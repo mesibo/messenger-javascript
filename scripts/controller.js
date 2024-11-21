@@ -1065,6 +1065,7 @@ mesiboWeb.controller('AppController', ['$scope', '$window', '$anchorScroll', fun
 			return;
 
 		await $scope.selected_user.deleteMessages();
+		$scope.selected_user = null;
 
 		var s = $scope.getSummary();
 		if(s.length) {
