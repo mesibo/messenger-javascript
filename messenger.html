@@ -272,7 +272,7 @@
 					    <div class="d-flex justify-content-between" ng-show="m.isMessage()" ng-style="{'max-width': MAX_MEDIA_WIDTH, 'min-width': MIN_MEDIA_WIDTH}">
 						    <div ng-show="getMessageText(m)" class="body m-1 mr-2 text-wrap text-break dont-break-out" style="cursor: default;overflow: hidden; text-overflow: ellipsis; font-size: 14px;max-height: 20em; line-height: 1.5em; color:#000;" ng-bind-html="getFormattedMessageText(m) | unsafe">abc</div>
 						    <div  class="time ml-auto small text-right flex-shrink-0 align-self-end text-muted" style="width:75px; cursor: default;">
-							    {{m.getTime()}}
+							    {{m.getTimestamp().getTime()}} 111
 							    <i ng-class= "getMessageStatusClass(m)" ng-style = "{'color':getMessageStatusColor(m) }" ></i>
 						    </div>
 					    </div>
@@ -282,7 +282,7 @@
 			    <div class="d-flex justify-content-between" ng-show="m.isMessage() && !m.isRichMessage()">
 				    <div ng-show="getMessageText(m)" class="body m-1 mr-2 text-wrap text-break dont-break-out" style="cursor: default;overflow: hidden; text-overflow: ellipsis; font-size: 14px;max-height: 20em; line-height: 1.5em; color: #000;">{{getMessageText(m)}}</div>
 				    <div  class="time ml-auto small text-right flex-shrink-0 align-self-end text-muted" style="width:75px; cursor: default;">
-					    {{m.getTime()}}
+					    {{m.getTimestamp().getTime()}}
 					    <i ng-class= "getMessageStatusClass(m)" ng-style = "{'color':getMessageStatusColor(m) }" ></i>
 				    </div>
 			    </div>
