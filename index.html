@@ -16,7 +16,16 @@
   </head>
   <body onload="login_init()">
 
-    <div class="login-page">
+    <!-- Loading screen (visible until token check completes) -->
+    <div id="loading-screen">
+      <div class="loading-logo">
+        <i class="fas fa-comment-alt"></i>
+      </div>
+      <div class="loading-spinner"></div>
+      <p class="loading-text">Mesibo Messenger</p>
+    </div>
+
+    <div class="login-page" id="login-page" style="display:none;">
       <div class="login-card">
 
         <!-- Branding -->
@@ -86,8 +95,8 @@
           </div>
         </div>
 
-      </div>
-    </div>
+    </div><!-- /.login-card -->
+    </div><!-- /.login-page -->
 
   </body>
 </html>

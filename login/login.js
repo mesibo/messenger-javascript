@@ -25,6 +25,11 @@ function login_init() {
 		redirect_messenger();
 		return;
 	}
+
+	// No token — hide loading screen, reveal login form
+	document.getElementById("loading-screen").style.display = "none";
+	document.getElementById("login-page").style.display = "flex";
+
 	var mesibo = Mesibo.getInstance();
 
 	document.getElementById("otpdiv").style.display = "none";
