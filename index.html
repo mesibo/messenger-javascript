@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.10/css/all.css" integrity="sha384-+d0P83n9kaQMCwj8F4RJB66tzIwOKmrdb46+porD/OvrJ+37WqIM7UoBtwHO6Nlg" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.3.1.js" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js" integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="https://cdn.mesibo.com/api/mesibo.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="login/login.css">
+    <script src="mesibo/config.js"></script>
+    <script src="login/login.js"></script>
+    <title>Mesibo Open Source Messenger — Sign In</title>
+  </head>
+  <body onload="login_init()">
+
+    <div class="login-page">
+      <div class="login-card">
+
+        <!-- Branding -->
+        <div class="login-brand">
+          <div class="login-logo">
+            <i class="fas fa-comment-alt"></i>
+          </div>
+          <h1 class="login-title">Mesibo Open Source Messenger</h1>
+          <p class="login-subtitle">Sign in to continue</p>
+        </div>
+
+        <!-- Error -->
+        <div id="errmsg" class="login-error">Login Error</div>
+
+        <!-- Phone -->
+        <div class="login-field">
+          <label for="phone">Phone Number</label>
+          <div class="login-input-wrapper">
+            <i class="fas fa-phone login-input-icon"></i>
+            <input type="text" id="phone" class="form-control login-input" placeholder="+1 888 555 1111">
+          </div>
+          <span class="login-hint">Include country code &mdash; e.g. +1, +44, +91</span>
+        </div>
+
+        <!-- OTP (shown after first step) -->
+        <div id="otpdiv" class="login-field">
+          <div class="login-otp-warning">
+            <i class="fas fa-exclamation-triangle login-otp-warning-icon"></i>
+            <span>
+              No OTP is sent to your phone. To get one: log in to the
+              <a href="https://mesibo.com/console" target="_blank">Mesibo Console</a>,
+              select your app, then click <strong>OTP for Demo App</strong> on the left menu to generate an OTP for your number.
+            </span>
+          </div>
+          <label for="otp">OTP</label>
+          <div class="login-input-wrapper">
+            <i class="fas fa-lock login-input-icon"></i>
+            <input type="password" id="otp" class="form-control login-input" placeholder="Enter OTP">
+          </div>
+        </div>
+
+        <!-- Actions -->
+        <div class="login-actions">
+          <button onclick="login_start()" class="login-btn">
+            Sign In &nbsp;<i class="fas fa-arrow-right"></i>
+          </button>
+          <a href="#" onclick="login_init(); return false;" class="login-restart">
+            <i class="fas fa-redo-alt"></i> Start again
+          </a>
+        </div>
+
+        <!-- Footer -->
+        <div class="login-footer">
+          <p>Open Source — Source code available on GitHub</p>
+          <div class="login-github-links">
+            <a href="https://github.com/mesibo/messenger-app-android" target="_blank" class="login-github-link">
+              <i class="fab fa-github"></i> Android
+            </a>
+            <span class="login-github-sep">&middot;</span>
+            <a href="https://github.com/mesibo/messenger-app-ios" target="_blank" class="login-github-link">
+              <i class="fab fa-github"></i> iOS
+            </a>
+            <span class="login-github-sep">&middot;</span>
+            <a href="https://github.com/mesibo/messenger-javascript" target="_blank" class="login-github-link">
+              <i class="fab fa-github"></i> Web
+            </a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </body>
+</html>

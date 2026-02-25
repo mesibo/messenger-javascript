@@ -1,0 +1,270 @@
+*, *::before, *::after { box-sizing: border-box; }
+
+body {
+  font-family: 'Roboto', sans-serif;
+  margin: 0;
+  min-height: 100vh;
+  background: linear-gradient(145deg, #00868b 0%, #004f52 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ── Page shell ─────────────────────────────────────────────── */
+.login-page {
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+
+/* ── Card ───────────────────────────────────────────────────── */
+.login-card {
+  background: #fff;
+  border-radius: 20px;
+  padding: 48px 40px 36px;
+  width: 100%;
+  max-width: 420px;
+  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.25);
+}
+
+@media (max-width: 480px) {
+  .login-card { padding: 36px 24px 28px; }
+}
+
+/* ── Branding ───────────────────────────────────────────────── */
+.login-brand {
+  text-align: center;
+  margin-bottom: 36px;
+}
+
+.login-logo {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #00868b, #00a89e);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.9rem;
+  margin: 0 auto 18px;
+  box-shadow: 0 6px 20px rgba(0, 134, 139, 0.4);
+}
+
+.login-title {
+  font-size: 1.35rem;
+  font-weight: 600;
+  color: #111b21;
+  margin: 0 0 6px;
+}
+
+.login-subtitle {
+  font-size: 0.88rem;
+  color: #8696a0;
+  margin: 0;
+}
+
+/* ── Error banner ───────────────────────────────────────────── */
+.login-error {
+  display: none;
+  background: #fff0f0;
+  color: #c62828;
+  border-left: 3px solid #e53935;
+  border-radius: 8px;
+  padding: 10px 14px;
+  font-size: 13px;
+  margin-bottom: 18px;
+}
+
+/* ── Form fields ────────────────────────────────────────────── */
+.login-field {
+  margin-bottom: 22px;
+}
+
+.login-field label {
+  display: block;
+  font-size: 11.5px;
+  font-weight: 600;
+  color: #54656f;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-bottom: 7px;
+}
+
+.login-input-wrapper {
+  position: relative;
+}
+
+.login-input-icon {
+  position: absolute;
+  left: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #b0bec5;
+  font-size: 13px;
+  pointer-events: none;
+  transition: color 0.2s;
+}
+
+.login-input {
+  width: 100%;
+  border: 1.5px solid #e5e8eb !important;
+  border-radius: 10px !important;
+  padding: 12px 14px 12px 42px !important;
+  font-size: 15px !important;
+  color: #111b21 !important;
+  background: #f8fafb !important;
+  outline: none !important;
+  box-shadow: none !important;
+  transition: border-color 0.2s, background 0.2s, box-shadow 0.2s;
+  caret-color: #00868b;
+}
+
+.login-input:focus {
+  border-color: #00868b !important;
+  background: #fff !important;
+  box-shadow: 0 0 0 3px rgba(0, 134, 139, 0.12) !important;
+}
+
+.login-input-wrapper:focus-within .login-input-icon {
+  color: #00868b;
+}
+
+.login-hint {
+  display: block;
+  font-size: 11.5px;
+  color: #8696a0;
+  margin-top: 6px;
+  line-height: 1.5;
+}
+
+.login-hint a {
+  color: #00868b !important;
+  text-decoration: underline !important;
+}
+.login-hint a:hover { color: #006f73 !important; }
+
+/* OTP warning banner */
+.login-otp-warning {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  background: #fff3cd;
+  border: 1.5px solid #f59e0b;
+  border-left: 4px solid #f59e0b;
+  border-radius: 10px;
+  padding: 12px 14px;
+  margin-bottom: 16px;
+  font-size: 12.5px;
+  color: #7c4f00;
+  line-height: 1.55;
+}
+
+.login-otp-warning-icon {
+  color: #f59e0b;
+  font-size: 15px;
+  margin-top: 1px;
+  flex-shrink: 0;
+}
+
+.login-otp-warning a {
+  color: #b45309 !important;
+  text-decoration: underline !important;
+  font-weight: 500;
+}
+.login-otp-warning a:hover { color: #92400e !important; }
+
+/* ── Actions ────────────────────────────────────────────────── */
+.login-actions {
+  margin-top: 30px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+}
+
+.login-btn {
+  width: 100%;
+  padding: 13px;
+  background: #00868b;
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  font-size: 15px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s, box-shadow 0.2s, transform 0.1s;
+  letter-spacing: 0.01em;
+}
+
+.login-btn:hover {
+  background: #006f73;
+  box-shadow: 0 6px 18px rgba(0, 134, 139, 0.38);
+}
+
+.login-btn:active {
+  transform: scale(0.98);
+}
+
+.login-restart {
+  font-size: 13px;
+  color: #8696a0 !important;
+  text-decoration: none !important;
+  cursor: pointer;
+  transition: color 0.15s;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.login-restart:hover { color: #00868b !important; }
+
+/* ── Footer ─────────────────────────────────────────────────── */
+.login-footer {
+  margin-top: 36px;
+  padding-top: 24px;
+  border-top: 1px solid #f0f2f5;
+  text-align: center;
+}
+
+.login-footer p {
+  font-size: 12.5px;
+  color: #8696a0;
+  margin: 0 0 10px;
+}
+
+.login-github-links {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.login-github-sep {
+  color: #c5cdd2;
+  font-size: 14px;
+  line-height: 1;
+}
+
+.login-github-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  font-weight: 500;
+  color: #111b21 !important;
+  background: #f0f2f5;
+  border-radius: 20px;
+  padding: 6px 14px;
+  text-decoration: none !important;
+  transition: background 0.15s, color 0.15s;
+}
+
+.login-github-link:hover {
+  background: #00868b;
+  color: #fff !important;
+}
