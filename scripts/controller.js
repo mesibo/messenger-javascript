@@ -905,6 +905,7 @@ mesiboWeb.controller('AppController', ['$scope', '$window', '$anchorScroll', fun
 	}
 
 	$scope.logout = function(authfail){
+		console.trace("logout called, authfail=" + authfail);
 		$scope.mesibo.stop();
 		if(hasHardCodedLoginToken()) {
 			if(authfail) 
@@ -913,6 +914,7 @@ mesiboWeb.controller('AppController', ['$scope', '$window', '$anchorScroll', fun
 		} 
 		
 		if(authfail) $scope.deleteTokenInStorage();
+		sessionStorage.setItem('mesibo_logged_out', '1');
 		window.location.replace("index.html");
 	}
 
